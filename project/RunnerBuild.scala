@@ -13,8 +13,12 @@ object RunnerBuild extends Build {
       scalaVersion := "2.10.0-RC3",
       // add other settings here
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor" % "2.1.0-RC3" cross CrossVersion.full
-      )
+        "com.typesafe.akka" %% "akka-actor" % "2.1.0-RC3" cross CrossVersion.full,
+        "com.typesafe.akka" %% "akka-zeromq" % "2.1.0-RC3" cross CrossVersion.full,
+        "org.apache.thrift" % "libthrift" % "0.9.0",
+        "org.slf4j" % "slf4j-log4j12" % "1.5.8"
+      ),
+      javaSource in Compile <<= (sourceDirectory in Compile)(_ / "thrift/gen-java")
     )
   )
 }

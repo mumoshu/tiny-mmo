@@ -18,7 +18,7 @@ case class DiedPlayer(name: String) extends Data
 
 // Events can be any objects
 
-case class SetName(name: String)
+case class Join(name: String)
 case object Start
 case class Forward(dx: Float)
 case object Die
@@ -32,7 +32,7 @@ class PlayerActor extends Actor with FSM[State, Data] {
   startWith(Idle, Uninitialized)
 
   when(Idle) {
-    case Event(SetName(name), Uninitialized) =>
+    case Event(Join(name), Uninitialized) =>
       stay using Player(name)
     case Event(Start, p: Player) =>
       goto(Started) using p
