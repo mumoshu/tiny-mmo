@@ -2,6 +2,7 @@ package org.example
 
 import akka.actor._
 import akka.zeromq._
+import models.{Id, World}
 import org.apache.thrift.transport.TIOStreamTransport
 import java.io.ByteArrayInputStream
 import org.apache.thrift.protocol.TBinaryProtocol
@@ -77,17 +78,17 @@ object Service {
   // as inproc:// transports messages across threads sharing the same context.
   val extension = ZeroMQExtension(system)
 
-  val authRouter = system.actorOf(Props[AuthRouter], name = "authRouter")
-  val authDealer = system.actorOf(Props[AuthDealer], name = "authDealer")
-  val authWorker = system.actorOf(Props[AuthWorker], name = "authWorker")
-  val authReq = system.actorOf(Props[AuthReq], name = "authReq")
+  val authRouter = system.actorOf(Props[WorldRouter], name = "authRouter")
+  val authDealer = system.actorOf(Props[WorldDealer], name = "authDealer")
+  val authWorker = system.actorOf(Props[WorldWorker], name = "authWorker")
+  val authReq = system.actorOf(Props[WorldReq], name = "authReq")
 
   val router = extension.newRouterSocket(Array(Bind("tcp://*:5560"), Listener(authRouter)))
   val dealer = extension.newDealerSocket(Array(Bind("inproc://workers"), Listener(authDealer)))
   val worker = extension.newDealerSocket(Array(Connect("inproc://workers"), Listener(authWorker)))
   val client = extension.newReqSocket(Array(Connect("tcp://127.0.0.1:5560"), Listener(authReq)))
 
-  class AuthReq extends Actor with ActorLogging {
+  class WorldReq extends Actor with ActorLogging {
     override def preStart() {
       println("Req starting up on thread: " + Thread.currentThread().getName)
     }
@@ -110,7 +111,7 @@ object Service {
   /**
    * The router accepts client connections.
    */
-  class AuthRouter extends Actor with ActorLogging {
+  class WorldRouter extends Actor with ActorLogging {
 
     override def preStart() {
       println("Router starting up on thread: " + Thread.currentThread().getName)
@@ -132,7 +133,7 @@ object Service {
   /**
    * The dealer connects to router
    */
-  class AuthDealer extends Actor with ActorLogging {
+  class WorldDealer extends Actor with ActorLogging {
 
     override def preStart() {
       println("Dealer starting up on thread: " + Thread.currentThread().getName)
@@ -154,7 +155,7 @@ object Service {
   /**
    * The worker connects to the dealer
    */
-  class AuthWorker extends Actor with ActorLogging {
+  class WorldWorker extends Actor with ActorLogging {
     override def preStart() {
       println("Worker starting up on thread: " + Thread.currentThread().getName)
     }
@@ -162,9 +163,28 @@ object Service {
     def receive: Receive = {
       case m @ ZMQMessage(Seq(identity, _, frames @_*)) =>
         log.info("message: " + m)
-        worker ! ZMQMessage(Seq(m.frames(0), m.frames(1), Frame("authenticated")))
-      case m : Send =>
-        log.info("message: " + m)
+        val idFrame = identity
+        val emptyFrame = m.frames(1)
+        val id = Id.fromByteArray(identity.payload.toArray)
+        deserialize(m) match {
+          case m: serializers.thrift.Join =>
+            val p = World.join(
+              nickname = m.name,
+              id = id.toString
+            )
+            // Notify the client that the client has successfully joined
+            worker ! ZMQMessage(Seq(idFrame, emptyFrame, Frame("authenticated")))
+            // Notify all currently connected clients that the new client has joined
+            World.findExcept(id.toString).foreach { p =>
+              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val mm = serialize(Message(recipient, new serializers.thrift.Join(p.nickname)))
+              worker ! mm
+            }
+          case m: serializers.thrift.Forward =>
+            World.move(id = id.toString, x = m.dx)
+          case m: serializers.thrift.Leave =>
+            World.leave(id = id.toString)
+        }
       case unexpected =>
         log.warning("Unexpected " + unexpected)
     }
