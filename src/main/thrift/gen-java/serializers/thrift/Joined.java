@@ -30,22 +30,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Forward");
+public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Joined");
 
-  private static final org.apache.thrift.protocol.TField DX_FIELD_DESC = new org.apache.thrift.protocol.TField("dx", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
+  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new ForwardStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new ForwardTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new JoinedStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new JoinedTupleSchemeFactory());
   }
 
-  public double dx; // required
+  public String id; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    DX((short)1, "dx");
+    ID((short)1, "id");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +60,8 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // DX
-          return DX;
+        case 1: // ID
+          return ID;
         default:
           return null;
       }
@@ -102,76 +102,74 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
   }
 
   // isset id assignments
-  private static final int __DX_ISSET_ID = 0;
-  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.DX, new org.apache.thrift.meta_data.FieldMetaData("dx", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Forward.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Joined.class, metaDataMap);
   }
 
-  public Forward() {
+  public Joined() {
   }
 
-  public Forward(
-    double dx)
+  public Joined(
+    String id)
   {
     this();
-    this.dx = dx;
-    setDxIsSet(true);
+    this.id = id;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Forward(Forward other) {
-    __isset_bitfield = other.__isset_bitfield;
-    this.dx = other.dx;
+  public Joined(Joined other) {
+    if (other.isSetId()) {
+      this.id = other.id;
+    }
   }
 
-  public Forward deepCopy() {
-    return new Forward(this);
+  public Joined deepCopy() {
+    return new Joined(this);
   }
 
   @Override
   public void clear() {
-    setDxIsSet(false);
-    this.dx = 0.0;
+    this.id = null;
   }
 
-  public double getDx() {
-    return this.dx;
+  public String getId() {
+    return this.id;
   }
 
-  public Forward setDx(double dx) {
-    this.dx = dx;
-    setDxIsSet(true);
+  public Joined setId(String id) {
+    this.id = id;
     return this;
   }
 
-  public void unsetDx() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __DX_ISSET_ID);
+  public void unsetId() {
+    this.id = null;
   }
 
-  /** Returns true if field dx is set (has been assigned a value) and false otherwise */
-  public boolean isSetDx() {
-    return EncodingUtils.testBit(__isset_bitfield, __DX_ISSET_ID);
+  /** Returns true if field id is set (has been assigned a value) and false otherwise */
+  public boolean isSetId() {
+    return this.id != null;
   }
 
-  public void setDxIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __DX_ISSET_ID, value);
+  public void setIdIsSet(boolean value) {
+    if (!value) {
+      this.id = null;
+    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case DX:
+    case ID:
       if (value == null) {
-        unsetDx();
+        unsetId();
       } else {
-        setDx((Double)value);
+        setId((String)value);
       }
       break;
 
@@ -180,8 +178,8 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case DX:
-      return Double.valueOf(getDx());
+    case ID:
+      return getId();
 
     }
     throw new IllegalStateException();
@@ -194,8 +192,8 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
     }
 
     switch (field) {
-    case DX:
-      return isSetDx();
+    case ID:
+      return isSetId();
     }
     throw new IllegalStateException();
   }
@@ -204,21 +202,21 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Forward)
-      return this.equals((Forward)that);
+    if (that instanceof Joined)
+      return this.equals((Joined)that);
     return false;
   }
 
-  public boolean equals(Forward that) {
+  public boolean equals(Joined that) {
     if (that == null)
       return false;
 
-    boolean this_present_dx = true;
-    boolean that_present_dx = true;
-    if (this_present_dx || that_present_dx) {
-      if (!(this_present_dx && that_present_dx))
+    boolean this_present_id = true && this.isSetId();
+    boolean that_present_id = true && that.isSetId();
+    if (this_present_id || that_present_id) {
+      if (!(this_present_id && that_present_id))
         return false;
-      if (this.dx != that.dx)
+      if (!this.id.equals(that.id))
         return false;
     }
 
@@ -230,20 +228,20 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
     return 0;
   }
 
-  public int compareTo(Forward other) {
+  public int compareTo(Joined other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Forward typedOther = (Forward)other;
+    Joined typedOther = (Joined)other;
 
-    lastComparison = Boolean.valueOf(isSetDx()).compareTo(typedOther.isSetDx());
+    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetDx()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.dx, typedOther.dx);
+    if (isSetId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -265,11 +263,15 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Forward(");
+    StringBuilder sb = new StringBuilder("Joined(");
     boolean first = true;
 
-    sb.append("dx:");
-    sb.append(this.dx);
+    sb.append("id:");
+    if (this.id == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.id);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -290,23 +292,21 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
     }
   }
 
-  private static class ForwardStandardSchemeFactory implements SchemeFactory {
-    public ForwardStandardScheme getScheme() {
-      return new ForwardStandardScheme();
+  private static class JoinedStandardSchemeFactory implements SchemeFactory {
+    public JoinedStandardScheme getScheme() {
+      return new JoinedStandardScheme();
     }
   }
 
-  private static class ForwardStandardScheme extends StandardScheme<Forward> {
+  private static class JoinedStandardScheme extends StandardScheme<Joined> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Forward struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Joined struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -316,10 +316,10 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
           break;
         }
         switch (schemeField.id) {
-          case 1: // DX
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.dx = iprot.readDouble();
-              struct.setDxIsSet(true);
+          case 1: // ID
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.id = iprot.readString();
+              struct.setIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -335,47 +335,49 @@ public class Forward implements org.apache.thrift.TBase<Forward, Forward._Fields
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Forward struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Joined struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(DX_FIELD_DESC);
-      oprot.writeDouble(struct.dx);
-      oprot.writeFieldEnd();
+      if (struct.id != null) {
+        oprot.writeFieldBegin(ID_FIELD_DESC);
+        oprot.writeString(struct.id);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class ForwardTupleSchemeFactory implements SchemeFactory {
-    public ForwardTupleScheme getScheme() {
-      return new ForwardTupleScheme();
+  private static class JoinedTupleSchemeFactory implements SchemeFactory {
+    public JoinedTupleScheme getScheme() {
+      return new JoinedTupleScheme();
     }
   }
 
-  private static class ForwardTupleScheme extends TupleScheme<Forward> {
+  private static class JoinedTupleScheme extends TupleScheme<Joined> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Forward struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Joined struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetDx()) {
+      if (struct.isSetId()) {
         optionals.set(0);
       }
       oprot.writeBitSet(optionals, 1);
-      if (struct.isSetDx()) {
-        oprot.writeDouble(struct.dx);
+      if (struct.isSetId()) {
+        oprot.writeString(struct.id);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Forward struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Joined struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
-        struct.dx = iprot.readDouble();
-        struct.setDxIsSet(true);
+        struct.id = iprot.readString();
+        struct.setIdIsSet(true);
       }
     }
   }

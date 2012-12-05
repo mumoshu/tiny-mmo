@@ -30,22 +30,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Die");
+public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Respawned");
 
-  private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
+  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new DieStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new DieTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new RespawnedStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new RespawnedTupleSchemeFactory());
   }
 
+  public String id; // required
   public double x; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    X((short)1, "x");
+    ID((short)1, "id"),
+    X((short)2, "x");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,7 +63,9 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // X
+        case 1: // ID
+          return ID;
+        case 2: // X
           return X;
         default:
           return null;
@@ -107,19 +112,23 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Die.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Respawned.class, metaDataMap);
   }
 
-  public Die() {
+  public Respawned() {
   }
 
-  public Die(
+  public Respawned(
+    String id,
     double x)
   {
     this();
+    this.id = id;
     this.x = x;
     setXIsSet(true);
   }
@@ -127,26 +136,54 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Die(Die other) {
+  public Respawned(Respawned other) {
     __isset_bitfield = other.__isset_bitfield;
+    if (other.isSetId()) {
+      this.id = other.id;
+    }
     this.x = other.x;
   }
 
-  public Die deepCopy() {
-    return new Die(this);
+  public Respawned deepCopy() {
+    return new Respawned(this);
   }
 
   @Override
   public void clear() {
+    this.id = null;
     setXIsSet(false);
     this.x = 0.0;
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public Respawned setId(String id) {
+    this.id = id;
+    return this;
+  }
+
+  public void unsetId() {
+    this.id = null;
+  }
+
+  /** Returns true if field id is set (has been assigned a value) and false otherwise */
+  public boolean isSetId() {
+    return this.id != null;
+  }
+
+  public void setIdIsSet(boolean value) {
+    if (!value) {
+      this.id = null;
+    }
   }
 
   public double getX() {
     return this.x;
   }
 
-  public Die setX(double x) {
+  public Respawned setX(double x) {
     this.x = x;
     setXIsSet(true);
     return this;
@@ -167,6 +204,14 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case ID:
+      if (value == null) {
+        unsetId();
+      } else {
+        setId((String)value);
+      }
+      break;
+
     case X:
       if (value == null) {
         unsetX();
@@ -180,6 +225,9 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case ID:
+      return getId();
+
     case X:
       return Double.valueOf(getX());
 
@@ -194,6 +242,8 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     }
 
     switch (field) {
+    case ID:
+      return isSetId();
     case X:
       return isSetX();
     }
@@ -204,14 +254,23 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Die)
-      return this.equals((Die)that);
+    if (that instanceof Respawned)
+      return this.equals((Respawned)that);
     return false;
   }
 
-  public boolean equals(Die that) {
+  public boolean equals(Respawned that) {
     if (that == null)
       return false;
+
+    boolean this_present_id = true && this.isSetId();
+    boolean that_present_id = true && that.isSetId();
+    if (this_present_id || that_present_id) {
+      if (!(this_present_id && that_present_id))
+        return false;
+      if (!this.id.equals(that.id))
+        return false;
+    }
 
     boolean this_present_x = true;
     boolean that_present_x = true;
@@ -230,14 +289,24 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     return 0;
   }
 
-  public int compareTo(Die other) {
+  public int compareTo(Respawned other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Die typedOther = (Die)other;
+    Respawned typedOther = (Respawned)other;
 
+    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetX()).compareTo(typedOther.isSetX());
     if (lastComparison != 0) {
       return lastComparison;
@@ -265,9 +334,17 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Die(");
+    StringBuilder sb = new StringBuilder("Respawned(");
     boolean first = true;
 
+    sb.append("id:");
+    if (this.id == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.id);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("x:");
     sb.append(this.x);
     first = false;
@@ -298,15 +375,15 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     }
   }
 
-  private static class DieStandardSchemeFactory implements SchemeFactory {
-    public DieStandardScheme getScheme() {
-      return new DieStandardScheme();
+  private static class RespawnedStandardSchemeFactory implements SchemeFactory {
+    public RespawnedStandardScheme getScheme() {
+      return new RespawnedStandardScheme();
     }
   }
 
-  private static class DieStandardScheme extends StandardScheme<Die> {
+  private static class RespawnedStandardScheme extends StandardScheme<Respawned> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Respawned struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -316,7 +393,15 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
           break;
         }
         switch (schemeField.id) {
-          case 1: // X
+          case 1: // ID
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.id = iprot.readString();
+              struct.setIdIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 2: // X
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.x = iprot.readDouble();
               struct.setXIsSet(true);
@@ -335,10 +420,15 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Respawned struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (struct.id != null) {
+        oprot.writeFieldBegin(ID_FIELD_DESC);
+        oprot.writeString(struct.id);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldBegin(X_FIELD_DESC);
       oprot.writeDouble(struct.x);
       oprot.writeFieldEnd();
@@ -348,32 +438,42 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   }
 
-  private static class DieTupleSchemeFactory implements SchemeFactory {
-    public DieTupleScheme getScheme() {
-      return new DieTupleScheme();
+  private static class RespawnedTupleSchemeFactory implements SchemeFactory {
+    public RespawnedTupleScheme getScheme() {
+      return new RespawnedTupleScheme();
     }
   }
 
-  private static class DieTupleScheme extends TupleScheme<Die> {
+  private static class RespawnedTupleScheme extends TupleScheme<Respawned> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Respawned struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetX()) {
+      if (struct.isSetId()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetX()) {
+        optionals.set(1);
+      }
+      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetId()) {
+        oprot.writeString(struct.id);
+      }
       if (struct.isSetX()) {
         oprot.writeDouble(struct.x);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Respawned struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
+        struct.id = iprot.readString();
+        struct.setIdIsSet(true);
+      }
+      if (incoming.get(1)) {
         struct.x = iprot.readDouble();
         struct.setXIsSet(true);
       }

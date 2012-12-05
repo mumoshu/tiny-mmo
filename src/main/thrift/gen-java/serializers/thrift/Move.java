@@ -30,15 +30,15 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Die");
+public class Move implements org.apache.thrift.TBase<Move, Move._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Move");
 
   private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new DieStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new DieTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new MoveStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new MoveTupleSchemeFactory());
   }
 
   public double x; // required
@@ -110,13 +110,13 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Die.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Move.class, metaDataMap);
   }
 
-  public Die() {
+  public Move() {
   }
 
-  public Die(
+  public Move(
     double x)
   {
     this();
@@ -127,13 +127,13 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Die(Die other) {
+  public Move(Move other) {
     __isset_bitfield = other.__isset_bitfield;
     this.x = other.x;
   }
 
-  public Die deepCopy() {
-    return new Die(this);
+  public Move deepCopy() {
+    return new Move(this);
   }
 
   @Override
@@ -146,7 +146,7 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     return this.x;
   }
 
-  public Die setX(double x) {
+  public Move setX(double x) {
     this.x = x;
     setXIsSet(true);
     return this;
@@ -204,12 +204,12 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Die)
-      return this.equals((Die)that);
+    if (that instanceof Move)
+      return this.equals((Move)that);
     return false;
   }
 
-  public boolean equals(Die that) {
+  public boolean equals(Move that) {
     if (that == null)
       return false;
 
@@ -230,13 +230,13 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     return 0;
   }
 
-  public int compareTo(Die other) {
+  public int compareTo(Move other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Die typedOther = (Die)other;
+    Move typedOther = (Move)other;
 
     lastComparison = Boolean.valueOf(isSetX()).compareTo(typedOther.isSetX());
     if (lastComparison != 0) {
@@ -265,7 +265,7 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Die(");
+    StringBuilder sb = new StringBuilder("Move(");
     boolean first = true;
 
     sb.append("x:");
@@ -298,15 +298,15 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     }
   }
 
-  private static class DieStandardSchemeFactory implements SchemeFactory {
-    public DieStandardScheme getScheme() {
-      return new DieStandardScheme();
+  private static class MoveStandardSchemeFactory implements SchemeFactory {
+    public MoveStandardScheme getScheme() {
+      return new MoveStandardScheme();
     }
   }
 
-  private static class DieStandardScheme extends StandardScheme<Die> {
+  private static class MoveStandardScheme extends StandardScheme<Move> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Move struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -335,7 +335,7 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Move struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -348,16 +348,16 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   }
 
-  private static class DieTupleSchemeFactory implements SchemeFactory {
-    public DieTupleScheme getScheme() {
-      return new DieTupleScheme();
+  private static class MoveTupleSchemeFactory implements SchemeFactory {
+    public MoveTupleScheme getScheme() {
+      return new MoveTupleScheme();
     }
   }
 
-  private static class DieTupleScheme extends TupleScheme<Die> {
+  private static class MoveTupleScheme extends TupleScheme<Move> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Move struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetX()) {
@@ -370,7 +370,7 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Move struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {

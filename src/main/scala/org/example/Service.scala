@@ -4,7 +4,6 @@ import akka.actor._
 import akka.zeromq._
 import models.{Id, World}
 import org.apache.thrift.transport.TIOStreamTransport
-import java.io.ByteArrayInputStream
 import org.apache.thrift.protocol.TBinaryProtocol
 import com.typesafe.config.ConfigFactory
 
@@ -28,11 +27,31 @@ object Service {
                 d.read(protocol)
                 d
               case 1 =>
-                val d = new serializers.thrift.Forward()
+                val d = new serializers.thrift.Move()
                 d.read(protocol)
                 d
               case 2 =>
                 val d = new serializers.thrift.Leave()
+                d.read(protocol)
+                d
+              case 3 =>
+                val d = new serializers.thrift.Respawn()
+                d.read(protocol)
+                d
+              case 4 =>
+                val d = new serializers.thrift.Joined()
+                d.read(protocol)
+                d
+              case 5 =>
+                val d = new serializers.thrift.Moved()
+                d.read(protocol)
+                d
+              case 6 =>
+                val d = new serializers.thrift.Left()
+                d.read(protocol)
+                d
+              case 7 =>
+                val d = new serializers.thrift.Respawned()
                 d.read(protocol)
                 d
               case unexpected =>
@@ -61,12 +80,27 @@ object Service {
       case b: serializers.thrift.Join =>
         b.write(protocol)
         compose(0)
-      case b: serializers.thrift.Forward =>
+      case b: serializers.thrift.Move =>
         b.write(protocol)
         compose(1)
       case b: serializers.thrift.Leave =>
         b.write(protocol)
         compose(2)
+      case b: serializers.thrift.Respawn =>
+        b.write(protocol)
+        compose(3)
+      case b: serializers.thrift.Joined =>
+        b.write(protocol)
+        compose(4)
+      case b: serializers.thrift.Moved =>
+        b.write(protocol)
+        compose(5)
+      case b: serializers.thrift.Left =>
+        b.write(protocol)
+        compose(6)
+      case b: serializers.thrift.Respawned =>
+        b.write(protocol)
+        compose(7)
       case unexpected =>
         throw new RuntimeException("Couldn't serialize an unexpected body: " + m.body)
     }
@@ -177,13 +211,23 @@ object Service {
             // Notify all currently connected clients that the new client has joined
             World.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val mm = serialize(Message(recipient, new serializers.thrift.Join(p.nickname)))
+              val mm = serialize(Message(recipient, new serializers.thrift.Joined(id.toString)))
               worker ! mm
             }
-          case m: serializers.thrift.Forward =>
-            World.move(id = id.toString, x = m.dx)
+          case m: serializers.thrift.Move =>
+            World.move(id = id.toString, x = m.x)
+            World.findExcept(id.toString).foreach { p =>
+              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val mm = serialize(Message(recipient, new serializers.thrift.Moved(id.toString, m.x)))
+              worker ! mm
+            }
           case m: serializers.thrift.Leave =>
             World.leave(id = id.toString)
+            World.findExcept(id.toString).foreach { p =>
+              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val mm = serialize(Message(recipient, new serializers.thrift.Left(id.toString)))
+              worker ! mm
+            }
         }
       case unexpected =>
         log.warning("Unexpected " + unexpected)
