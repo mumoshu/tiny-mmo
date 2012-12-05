@@ -1,6 +1,7 @@
 package org.example.models
 
 import com.mongodb.casbah.Imports._
+import org.apache.commons.codec.binary.Base64
 
 case class Player(id: String, nickname: String)
 
@@ -11,8 +12,8 @@ case class Id(id: String) {
 
 object Id {
 
-  def bytesToStr(bytes: Array[Byte]): String = ""
-  def strToBytes(str: String): Array[Byte] = Array.empty
+  def bytesToStr(bytes: Array[Byte]): String = Base64.encodeBase64String(bytes)
+  def strToBytes(str: String): Array[Byte] = Base64.decodeBase64(str)
 
   def fromByteArray(bytes: Array[Byte]): Id = Id(bytesToStr(bytes))
   def fromString(idStr: String): Id = Id(idStr)
