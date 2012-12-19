@@ -2,7 +2,7 @@ package org.example
 
 import akka.actor._
 import akka.zeromq._
-import models.{Id, World}
+import models.{Id, MongoBackedWorld}
 import org.apache.thrift.transport.TIOStreamTransport
 import org.apache.thrift.protocol.TBinaryProtocol
 import com.typesafe.config.ConfigFactory
@@ -202,28 +202,28 @@ object Service {
         val id = Id.fromByteArray(identity.payload.toArray)
         deserialize(m) match {
           case m: serializers.thrift.Join =>
-            val p = World.join(
+            val p = MongoBackedWorld.join(
               nickname = m.name,
               id = id.toString
             )
             // Notify the client that the client has successfully joined
             worker ! ZMQMessage(Seq(idFrame, emptyFrame, Frame("authenticated")))
             // Notify all currently connected clients that the new client has joined
-            World.findExcept(id.toString).foreach { p =>
+            MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
               val mm = serialize(Message(recipient, new serializers.thrift.Joined(id.toString)))
               worker ! mm
             }
           case m: serializers.thrift.Move =>
-            World.move(id = id.toString, x = m.x)
-            World.findExcept(id.toString).foreach { p =>
+            MongoBackedWorld.tryMove(id = id.toString, x = m.x)
+            MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
               val mm = serialize(Message(recipient, new serializers.thrift.Moved(id.toString, m.x)))
               worker ! mm
             }
           case m: serializers.thrift.Leave =>
-            World.leave(id = id.toString)
-            World.findExcept(id.toString).foreach { p =>
+            MongoBackedWorld.leave(id = id.toString)
+            MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
               val mm = serialize(Message(recipient, new serializers.thrift.Left(id.toString)))
               worker ! mm

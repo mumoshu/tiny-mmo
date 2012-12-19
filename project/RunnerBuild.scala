@@ -20,7 +20,9 @@ object RunnerBuild extends Build {
         "org.apache.thrift" % "libthrift" % "0.9.0",
         "org.slf4j" % "slf4j-log4j12" % "1.5.8",
         "com.github.tmingos" % "casbah_2.10" % "2.5.0-SNAPSHOT",
-        "commons-codec" % "commons-codec" % "1.7"
+        "commons-codec" % "commons-codec" % "1.7",
+        "com.typesafe.akka" %% "akka-testkit" % "2.1.0-RC3" % "test" cross CrossVersion.full,
+        "org.specs2" %% "specs2" % "1.13-SNAPSHOT" % "test" cross CrossVersion.full
       ),
       javaSource in Compile <<= (sourceDirectory in Compile)(_ / "thrift/gen-java")
     )

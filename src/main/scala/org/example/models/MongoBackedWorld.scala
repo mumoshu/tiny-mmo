@@ -20,7 +20,7 @@ object Id {
 
 }
 
-object World {
+object MongoBackedWorld {
 
   val connection = MongoConnection("localhost")
   val db = connection("runner")
@@ -47,7 +47,7 @@ object World {
     }.toList
   }
 
-  def move(id: String, x: Double) {
+  def tryMove(id: String, x: Double) {
     collection.update(
       DBObject(
         "id" -> id
