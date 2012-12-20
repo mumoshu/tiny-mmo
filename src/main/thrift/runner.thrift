@@ -50,3 +50,28 @@ struct Respawned {
   1: string id,
   2: double x
 }
+
+struct Say {
+  1: string id,
+  2: string text,
+}
+
+struct Shout {
+  1: string id,
+  2: string text
+}
+
+struct Attack {
+  1: string attackerId,
+  2: string targetId
+}
+
+struct Appear {
+  1: string id,
+  2: double x,
+  3: double z,
+}
+
+struct Disappear {
+  1: string id,
+}

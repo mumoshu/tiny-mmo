@@ -141,6 +141,8 @@ case class DiedPlayer(id: Identity, position: Position) extends Player with Died
 
 trait World {
 
+  def say(p: Thing, text: String): World
+
   def existsAt(position: Position): Boolean
 
   def appear(t: Thing): World
@@ -171,13 +173,26 @@ trait ConnectedWorld extends World {
 
 }
 
-class InMemoryWorld(things: List[Thing], terrain: Terrain) extends World {
+sealed trait Speech {
+  /**
+   * Who
+   */
+  val id: Identity
+  val text: String
+}
+
+case class Say(id: Identity, text: String) extends Speech
+case class Shout(id: Identity, text: String) extends Speech
+
+class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech]) extends World {
+  def say(p: Thing, text: String) =
+    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Say(p.id, text))
 
   def appear(t: Thing) =
-    new InMemoryWorld(things = things :+ t, terrain = terrain)
+    new InMemoryWorld(things = things :+ t, terrain = terrain, speeches = speeches)
 
   def disappear(t: Thing) =
-    new InMemoryWorld(things = things.filter(_ == t), terrain = terrain)
+    new InMemoryWorld(things = things.filter(_ == t), terrain = terrain, speeches = speeches)
 
   def attack(attacker: Attacker, target: Target) = {
     // TODO atk - def
@@ -192,7 +207,7 @@ class InMemoryWorld(things: List[Thing], terrain: Terrain) extends World {
       throw new RuntimeException("Target not found.")
     }
     (
-      new InMemoryWorld(things = thingsAfter, terrain = terrain),
+      new InMemoryWorld(things = thingsAfter, terrain = terrain, speeches = speeches),
       attacker,
       t2
     )
@@ -202,9 +217,9 @@ class InMemoryWorld(things: List[Thing], terrain: Terrain) extends World {
 
   def findExcept(id: Identity) = things.filterNot(_.id == id)
 
-  def join(p: LivingPlayer) = new InMemoryWorld(things = things :+ p, terrain = terrain)
+  def join(p: LivingPlayer) = new InMemoryWorld(things = things :+ p, terrain = terrain, speeches = speeches)
 
-  def leave(p: LivingPlayer) = new InMemoryWorld(things = things.filter(_.id != p.id), terrain = terrain)
+  def leave(p: LivingPlayer) = new InMemoryWorld(things = things.filter(_.id != p.id), terrain = terrain, speeches = speeches)
 
   def tryMove(thing: Thing, movement: Movement) = (
     new InMemoryWorld(
@@ -214,7 +229,8 @@ class InMemoryWorld(things: List[Thing], terrain: Terrain) extends World {
         case t =>
           t
       },
-      terrain = terrain
+      terrain = terrain,
+      speeches = speeches
     ),
     thing
   )
@@ -233,7 +249,8 @@ class InMemoryWorld(things: List[Thing], terrain: Terrain) extends World {
           case tt =>
             tt
         },
-        terrain = terrain
+        terrain = terrain,
+        speeches = speeches
       ),
       moved
     )

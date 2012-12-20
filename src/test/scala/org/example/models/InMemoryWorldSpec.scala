@@ -5,12 +5,15 @@ import world.world._
 
 object InMemoryWorldSpec extends Specification {
 
-  val initialWorld: InMemoryWorld = new InMemoryWorld(List.empty, Terrain(
-    Array(
-      Array(Tile.Ground, Tile.Ground),
-      Array(Tile.Ground, Tile.Ground)
-    )
-  ))
+  val initialWorld: InMemoryWorld = new InMemoryWorld(
+    List.empty,
+    Terrain(
+      Array(
+        Array(Tile.Ground, Tile.Ground),
+        Array(Tile.Ground, Tile.Ground)
+      )
+    ),
+    List.empty)
 
   "The world" should {
 
@@ -47,6 +50,11 @@ object InMemoryWorldSpec extends Specification {
       val b = new LivingPlayer(StringIdentity("two"), 1f, Position(2f, 2f))
       val (newWorld, atk, targ) = initialWorld.join(a).join(b).attack(a,b)
       targ must beAnInstanceOf[DiedPlayer]
+    }
+
+    "allow to say something" in {
+      val a = new LivingPlayer(StringIdentity("one"), 10f, Position(1f, 2f))
+      initialWorld.say(a, "hi").speeches.size must be equalTo (1)
     }
   }
 
