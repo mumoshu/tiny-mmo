@@ -1,108 +1,49 @@
-package org.example
+package org.example.server
 
 import akka.actor._
 import akka.zeromq._
-import models.{Id, MongoBackedWorld}
 import org.apache.thrift.transport.TIOStreamTransport
 import org.apache.thrift.protocol.TBinaryProtocol
 import com.typesafe.config.ConfigFactory
+import org.example.models.{MongoBackedWorld, Id}
+import org.example.protocol.Protocol
+import akka.zeromq.Connect
+import akka.zeromq.Listener
+import akka.zeromq.Bind
+import collection.generic.SeqFactory
 
 // 'brew install zeromq'
-object Service {
+object ZMQServer {
 
-  // org.example.Service.deserialize(akka.zeromq.ZMQMessage(Seq(akka.zeromq.Frame(Seq(1:Byte)), akka.zeromq.Frame(Seq.empty[Byte]), akka.zeromq.Frame(Seq(0:Byte)), akka.zeromq.Frame(Seq(11,0,1,0,0,0,4,104,111,103,101,0).map(_.toByte)))))
-  def deserialize(m: ZMQMessage): AnyRef = {
-    m match {
-      case ZMQMessage(Seq(identity, empty, header, body@_*)) =>
-        header.payload match {
-          case Seq(hint) =>
-              val bytes = body.map(_.payload.toArray).reduce(_++_)
-              val bais = new java.io.ByteArrayInputStream(bytes)
-              val transport = new TIOStreamTransport(bais)
-              val protocol = new TBinaryProtocol(transport)
+  val protocol = new Protocol {
 
-              hint match {
-              case 0 =>
-                val d = new serializers.thrift.Join()
-                d.read(protocol)
-                d
-              case 1 =>
-                val d = new serializers.thrift.Move()
-                d.read(protocol)
-                d
-              case 2 =>
-                val d = new serializers.thrift.Leave()
-                d.read(protocol)
-                d
-              case 3 =>
-                val d = new serializers.thrift.Respawn()
-                d.read(protocol)
-                d
-              case 4 =>
-                val d = new serializers.thrift.Joined()
-                d.read(protocol)
-                d
-              case 5 =>
-                val d = new serializers.thrift.Moved()
-                d.read(protocol)
-                d
-              case 6 =>
-                val d = new serializers.thrift.Left()
-                d.read(protocol)
-                d
-              case 7 =>
-                val d = new serializers.thrift.Respawned()
-                d.read(protocol)
-                d
-              case unexpected =>
-                throw new RuntimeException("Unexpected hint: " + hint)
-            }
+    type Payload = Seq[Frame]
+
+    val codec = new Codec[Payload] {
+      /**
+       * Decompose the TransportMessage and extracts its content
+       * @param m the message decomposed
+       * @return
+       */
+      def unapply(m: Payload) = {
+        m match {
+          case Seq(header, body@_*) =>
+            val Seq(hint) = header.payload
+            val bytes = body.map(_.payload.toArray).reduce(_++_)
+            Some((hint, bytes))
           case unexpected =>
-            throw new RuntimeException("Unexpected format header format: " + header.payload)
+            throw new RuntimeException("Unexpected ZMQMessage format: " + unexpected)
         }
-    }
+      }
 
-  }
-
-  type Recipient = Frame
-
-  case class Message[A](recipient: Recipient, body: A)
-
-  // org.example.Service.serialize(org.example.Service.Message(akka.zeromq.Frame(Seq(1:Byte)), new serializers.thrift.Join("hoge")))
-  def serialize(m: Message[AnyRef]): ZMQMessage = {
-    val baos = new java.io.ByteArrayOutputStream()
-    val transport = new TIOStreamTransport(baos)
-    val protocol = new TBinaryProtocol(transport)
-    def compose(hint: Byte) = {
-      ZMQMessage(Seq(m.recipient, Frame(Seq.empty), Frame(Seq(hint)), Frame(baos.toByteArray.toSeq)))
-    }
-    m.body match {
-      case b: serializers.thrift.Join =>
-        b.write(protocol)
-        compose(0)
-      case b: serializers.thrift.Move =>
-        b.write(protocol)
-        compose(1)
-      case b: serializers.thrift.Leave =>
-        b.write(protocol)
-        compose(2)
-      case b: serializers.thrift.Respawn =>
-        b.write(protocol)
-        compose(3)
-      case b: serializers.thrift.Joined =>
-        b.write(protocol)
-        compose(4)
-      case b: serializers.thrift.Moved =>
-        b.write(protocol)
-        compose(5)
-      case b: serializers.thrift.Left =>
-        b.write(protocol)
-        compose(6)
-      case b: serializers.thrift.Respawned =>
-        b.write(protocol)
-        compose(7)
-      case unexpected =>
-        throw new RuntimeException("Couldn't serialize an unexpected body: " + m.body)
+      /**
+       * Composes the message content into a TransportMessage
+       * @param hint
+       * @param bytes
+       * @return
+       */
+      def apply(hint: Byte, bytes: Array[Byte]) =
+        Seq(Frame(Seq(hint)), Frame(bytes.toSeq))
     }
   }
 
@@ -196,11 +137,12 @@ object Service {
 
     def receive: Receive = {
       case m @ ZMQMessage(Seq(identity, _, frames @_*)) =>
+        import protocol._
         log.info("message: " + m)
         val idFrame = identity
         val emptyFrame = m.frames(1)
         val id = Id.fromByteArray(identity.payload.toArray)
-        deserialize(m) match {
+        deserialize(frames) match {
           case m: serializers.thrift.Join =>
             val p = MongoBackedWorld.join(
               nickname = m.name,
@@ -211,21 +153,24 @@ object Service {
             // Notify all currently connected clients that the new client has joined
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val mm = serialize(Message(recipient, new serializers.thrift.Joined(id.toString)))
+              val frames = serialize(new serializers.thrift.Joined(id.toString))
+              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }
           case m: serializers.thrift.Move =>
             MongoBackedWorld.tryMove(id = id.toString, x = m.x)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val mm = serialize(Message(recipient, new serializers.thrift.Moved(id.toString, m.x)))
+              val frames = serialize(new serializers.thrift.Moved(id.toString, m.x))
+              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }
           case m: serializers.thrift.Leave =>
             MongoBackedWorld.leave(id = id.toString)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val mm = serialize(Message(recipient, new serializers.thrift.Left(id.toString)))
+              val frames = serialize(new serializers.thrift.Left(id.toString))
+              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }
         }

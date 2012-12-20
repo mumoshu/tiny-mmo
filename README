@@ -3,3 +3,7 @@ A sample for the Typesafe Stack (http://typesafe.com/stack).
 Scala sample project using Scala and SBT.
 
 To run and test it use SBT invoke: 'sbt run'
+
+= Generate source code from the Thrift file
+
+  thrift --gen java src/main/thrift/runner.thrift
