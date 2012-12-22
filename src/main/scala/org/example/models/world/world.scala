@@ -56,6 +56,17 @@ sealed trait Thing {
 
 }
 
+case class StaticObject(id: Identity, prefab: String, position: Position) extends Thing {
+  /**
+   * 移動先に何があったとしても強制的に移動する
+   * @param movement
+   * @return
+   */
+  def move(movement: Movement) = copy(position = position.move(movement))
+
+  def moveTo(p: Position) = copy(position = p)
+}
+
 /**
  * エネミーやプレイヤーなどの生物
  */
@@ -192,7 +203,7 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
     new InMemoryWorld(things = things :+ t, terrain = terrain, speeches = speeches)
 
   def disappear(t: Thing) =
-    new InMemoryWorld(things = things.filter(_ == t), terrain = terrain, speeches = speeches)
+    new InMemoryWorld(things = things.filter(_ != t), terrain = terrain, speeches = speeches)
 
   def attack(attacker: Attacker, target: Target) = {
     // TODO atk - def

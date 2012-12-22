@@ -28,6 +28,32 @@ object InMemoryWorldSpec extends Specification {
 
     }
 
+    "allow user leaving" in {
+
+      val player = new LivingPlayer(StringIdentity("one"), 10f, Position(1f, 2f))
+
+      initialWorld.join(player).leave(player).find(player.id) must be none
+    }
+
+    "allow finding an user" in {
+
+      val player = new LivingPlayer(StringIdentity("one"), 10f, Position(1f, 2f))
+
+      initialWorld.join(player).find(player.id) must be some
+    }
+
+    "allow appearing a thing" in {
+      val house = new StaticObject(StringIdentity("house1"), "house", Position(1f, 2f))
+
+      initialWorld.appear(house).things must be size(1)
+    }
+
+    "allow disappearing a thing" in {
+      val house = new StaticObject(StringIdentity("house1"), "house", Position(1f, 2f))
+
+      initialWorld.appear(house).disappear(house).things must be size(0)
+    }
+
     "allow moving things relatively" in {
       var world = initialWorld
       val a = new LivingPlayer(StringIdentity("one"), 10f, Position(1f, 2f))
