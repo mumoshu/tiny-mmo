@@ -24,14 +24,7 @@ object RangedPublisherSpec extends Specification with Mockito {
       val client1 = new PositionedClient(handle1, position, observer = client1Observer)
       val client2 = new PositionedClient(handle2, position, observer = client2Observer)
 
-      implicit val any2ByteString = new ByteStringWriter {
-        def apply(any: Any) = any match {
-          case str: String =>
-            ByteString(str)
-          case unexpected =>
-            throw new RuntimeException("Unsurppoted object: " + unexpected)
-        }
-      }
+      implicit val any2ByteString = DefaultByteStringWriter
 
       pub.accept(client1).accept(client2).publish("foo").clients.forall { _.received must be size(1) }
 

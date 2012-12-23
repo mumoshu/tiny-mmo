@@ -75,3 +75,40 @@ struct Appear {
 struct Disappear {
   1: string id,
 }
+
+struct MoveTo {
+  1: string id,
+  2: double x,
+  3: double z,
+}
+
+struct GetPosition {
+  1: string id,
+}
+
+struct Position {
+  1: string id,
+  2: double x,
+  3: double z
+}
+
+struct MyId {
+}
+
+struct YourId {
+  1: string id,
+}
+
+struct FindAllThings {
+
+}
+
+struct Thing {
+  1: string id,
+  2: Position position,
+}
+
+struct Things {
+  1: list<Thing> things,
+}
+

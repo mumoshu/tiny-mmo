@@ -2,12 +2,33 @@ package org.example.models.world.world
 
 import org.example.models.Terrain
 
-sealed trait Identity
+sealed trait Identity {
+  /**
+   * The representation of this identity in string
+   * @return
+   */
+  def str: String
+}
 
-case class StringIdentity(id: String) extends Identity
+case class StringIdentity(id: String) extends Identity {
+  def str = id
+}
 
 case class Position(x: Float, z: Float) {
   def move(m: Movement) = copy(x = x + m.diff.x, z = z + m.diff.z)
+  def distance(other: Position) = math.sqrt(math.pow(x - other.x, 2) + math.pow(z - other.z, 2))
+  val distanceFromOrigin = math.sqrt(math.pow(x, 2) + math.pow(z, 2))
+  def lerp(to: Position, step: Float): Position = {
+    val distanceToDestX = to.x - x
+    val distanceToDestZ = to.z - z
+    val distance = Position(distanceToDestX, distanceToDestZ).distanceFromOrigin.toFloat
+    val a = step / distance
+    if (distance > step) {
+      copy(x = a * distanceToDestX, z = a * distanceToDestZ)
+    } else {
+      copy(x = distanceToDestX, z = distanceToDestZ)
+    }
+  }
 }
 
 case class Movement(diff: Position)
@@ -173,6 +194,14 @@ trait World {
   def join(p: LivingPlayer): World
 
   def leave(p: LivingPlayer): World
+
+  def tryMove(id: Identity, p: Position): (World, Thing)
+
+  def tryAttack(attackerId: Identity, targetId: Identity): (World, Thing, Thing)
+
+  def trySay(id: Identity, what: String): World
+
+  def tryShout(id: Identity, what: String): World
 }
 
 trait ConnectedWorld extends World {
@@ -265,5 +294,52 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
       ),
       moved
     )
+  }
+
+  def tryAttack(attackerId: Identity, targetId: Identity) = {
+    // TODO atk - def
+    val dealtDmg = 1
+    val thingsAfter = things.map {
+      case t if t.id == targetId =>
+        t.asInstanceOf[LivingPlayer].reduceLife(dealtDmg).merge
+      case t =>
+        t
+    }
+    val attacker = thingsAfter.find(_.id == attackerId).getOrElse {
+      throw new RuntimeException("Attacker not found")
+    }
+    val t2 = thingsAfter.find(_.id == targetId).getOrElse {
+      throw new RuntimeException("Target not found.")
+    }
+    (
+      new InMemoryWorld(things = thingsAfter, terrain = terrain, speeches = speeches),
+      attacker,
+      t2
+      )
+  }
+
+  def tryMove(id: Identity, p: Position): (World, Thing) = {
+    val moved = things.filter(_.id == id).head.tryMoveTo(p)(this)
+    (
+      new InMemoryWorld(
+        things = things.map {
+          case tt if tt.id == id =>
+            moved
+          case tt =>
+            tt
+        },
+        terrain = terrain,
+        speeches = speeches
+      ),
+      moved
+      )
+  }
+
+  def trySay(id: Identity, what: String) = {
+    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Say(id, what))
+  }
+
+  def tryShout(id: Identity, what: String) = {
+    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Shout(id, what))
   }
 }
