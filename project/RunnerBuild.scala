@@ -22,7 +22,9 @@ object RunnerBuild extends Build {
         "com.github.tmingos" % "casbah_2.10" % "2.5.0-SNAPSHOT",
         "commons-codec" % "commons-codec" % "1.7",
         "com.typesafe.akka" %% "akka-testkit" % "2.1.0-RC3" % "test" cross CrossVersion.full,
-        "org.specs2" %% "specs2" % "1.13-SNAPSHOT" % "test" cross CrossVersion.full
+        "org.specs2" %% "specs2" % "1.13-SNAPSHOT" % "test" cross CrossVersion.full,
+        "org.mockito" % "mockito-all" % "1.9.0" % "test",
+        "org.hamcrest" % "hamcrest-all" % "1.3" % "test"
       ),
       javaSource in Compile <<= (sourceDirectory in Compile)(_ / "thrift/gen-java")
     )
