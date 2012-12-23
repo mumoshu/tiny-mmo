@@ -5,6 +5,8 @@ import ActorDSL._
 import java.net.InetSocketAddress
 import org.example.protocol.Protocol
 import akka.util.ByteString
+import org.example.models.{Tile, Terrain, Id}
+import org.example.models.world.world.{StringIdentity, Position, LivingPlayer, InMemoryWorld}
 
 /**
  * See http://stackoverflow.com/questions/12959709/send-a-tcp-ip-message-akka-actor
@@ -39,14 +41,36 @@ object TCPIPServer {
     }
   }
 
-  actor(new Act with ActorLogging {
+  var world = new InMemoryWorld(List.empty, Terrain(Array(Array(Tile.Ground, Tile.Ground))), List.empty)
+
+  val server = actor(new Act with ActorLogging {
     println("Starting")
-    IOManager(context.system) listen new InetSocketAddress(1234)
+    val socket = IOManager(context.system) listen new InetSocketAddress(1234)
     become {
       case IO.NewClient(server) ⇒
-        server.accept()
+        val clientSocket = server.accept()
+        println("Accepted: " + clientSocket.uuid.toString)
+        // You need this to read incoming packets afterwards
+        // Unfortunately I don't know why
+        clientSocket.write(ByteString("You are connected"))
       case IO.Read(handle, bytes) ⇒
-        log.info("got {} from {}", bytes.decodeString("utf-8"), handle)
+        import protocol._
+        println("Read: " + handle.uuid)
+        println("Message: " + bytes)
+        val identity = handle
+        val id = StringIdentity(handle.uuid.toString)
+        deserialize(bytes) match {
+          case m: serializers.thrift.Join =>
+            world = world.join(new LivingPlayer(id, 10f, Position(0f, 0f)))
+            world.findExcept(id).foreach { p =>
+              //
+            }
+        }
+      case "STOP" =>
+        println("Closing the server socket")
+        socket.close()
+      case unexpected =>
+        println("Unexpected message: " + unexpected)
       }
   })
 }

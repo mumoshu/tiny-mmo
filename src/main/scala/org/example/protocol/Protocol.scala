@@ -112,7 +112,7 @@ trait Protocol {
         b.write(protocol)
         comp(7)
       case unexpected =>
-        throw new RuntimeException("Couldn't serialize an unexpected body: " + m)
+        throw new RuntimeException("Couldn't serialize an unexpected body: " + m + "(" + m.getClass + ")")
     }
   }
 
