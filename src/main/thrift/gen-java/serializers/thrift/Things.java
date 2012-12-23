@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, java.io.Serializable, Cloneable {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Things");
 
-  private static final org.apache.thrift.protocol.TField THINGS_FIELD_DESC = new org.apache.thrift.protocol.TField("things", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField TS_FIELD_DESC = new org.apache.thrift.protocol.TField("ts", org.apache.thrift.protocol.TType.LIST, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -41,11 +41,11 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     schemes.put(TupleScheme.class, new ThingsTupleSchemeFactory());
   }
 
-  public List<Thing> things; // required
+  public List<Thing> ts; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    THINGS((short)1, "things");
+    TS((short)1, "ts");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +60,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // THINGS
-          return THINGS;
+        case 1: // TS
+          return TS;
         default:
           return null;
       }
@@ -105,7 +105,7 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.THINGS, new org.apache.thrift.meta_data.FieldMetaData("things", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.TS, new org.apache.thrift.meta_data.FieldMetaData("ts", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Thing.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -116,22 +116,22 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
   }
 
   public Things(
-    List<Thing> things)
+    List<Thing> ts)
   {
     this();
-    this.things = things;
+    this.ts = ts;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public Things(Things other) {
-    if (other.isSetThings()) {
-      List<Thing> __this__things = new ArrayList<Thing>();
-      for (Thing other_element : other.things) {
-        __this__things.add(new Thing(other_element));
+    if (other.isSetTs()) {
+      List<Thing> __this__ts = new ArrayList<Thing>();
+      for (Thing other_element : other.ts) {
+        __this__ts.add(new Thing(other_element));
       }
-      this.things = __this__things;
+      this.ts = __this__ts;
     }
   }
 
@@ -141,55 +141,55 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
 
   @Override
   public void clear() {
-    this.things = null;
+    this.ts = null;
   }
 
-  public int getThingsSize() {
-    return (this.things == null) ? 0 : this.things.size();
+  public int getTsSize() {
+    return (this.ts == null) ? 0 : this.ts.size();
   }
 
-  public java.util.Iterator<Thing> getThingsIterator() {
-    return (this.things == null) ? null : this.things.iterator();
+  public java.util.Iterator<Thing> getTsIterator() {
+    return (this.ts == null) ? null : this.ts.iterator();
   }
 
-  public void addToThings(Thing elem) {
-    if (this.things == null) {
-      this.things = new ArrayList<Thing>();
+  public void addToTs(Thing elem) {
+    if (this.ts == null) {
+      this.ts = new ArrayList<Thing>();
     }
-    this.things.add(elem);
+    this.ts.add(elem);
   }
 
-  public List<Thing> getThings() {
-    return this.things;
+  public List<Thing> getTs() {
+    return this.ts;
   }
 
-  public Things setThings(List<Thing> things) {
-    this.things = things;
+  public Things setTs(List<Thing> ts) {
+    this.ts = ts;
     return this;
   }
 
-  public void unsetThings() {
-    this.things = null;
+  public void unsetTs() {
+    this.ts = null;
   }
 
-  /** Returns true if field things is set (has been assigned a value) and false otherwise */
-  public boolean isSetThings() {
-    return this.things != null;
+  /** Returns true if field ts is set (has been assigned a value) and false otherwise */
+  public boolean isSetTs() {
+    return this.ts != null;
   }
 
-  public void setThingsIsSet(boolean value) {
+  public void setTsIsSet(boolean value) {
     if (!value) {
-      this.things = null;
+      this.ts = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case THINGS:
+    case TS:
       if (value == null) {
-        unsetThings();
+        unsetTs();
       } else {
-        setThings((List<Thing>)value);
+        setTs((List<Thing>)value);
       }
       break;
 
@@ -198,8 +198,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case THINGS:
-      return getThings();
+    case TS:
+      return getTs();
 
     }
     throw new IllegalStateException();
@@ -212,8 +212,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     }
 
     switch (field) {
-    case THINGS:
-      return isSetThings();
+    case TS:
+      return isSetTs();
     }
     throw new IllegalStateException();
   }
@@ -231,12 +231,12 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     if (that == null)
       return false;
 
-    boolean this_present_things = true && this.isSetThings();
-    boolean that_present_things = true && that.isSetThings();
-    if (this_present_things || that_present_things) {
-      if (!(this_present_things && that_present_things))
+    boolean this_present_ts = true && this.isSetTs();
+    boolean that_present_ts = true && that.isSetTs();
+    if (this_present_ts || that_present_ts) {
+      if (!(this_present_ts && that_present_ts))
         return false;
-      if (!this.things.equals(that.things))
+      if (!this.ts.equals(that.ts))
         return false;
     }
 
@@ -256,12 +256,12 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     int lastComparison = 0;
     Things typedOther = (Things)other;
 
-    lastComparison = Boolean.valueOf(isSetThings()).compareTo(typedOther.isSetThings());
+    lastComparison = Boolean.valueOf(isSetTs()).compareTo(typedOther.isSetTs());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetThings()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.things, typedOther.things);
+    if (isSetTs()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ts, typedOther.ts);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -286,11 +286,11 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     StringBuilder sb = new StringBuilder("Things(");
     boolean first = true;
 
-    sb.append("things:");
-    if (this.things == null) {
+    sb.append("ts:");
+    if (this.ts == null) {
       sb.append("null");
     } else {
-      sb.append(this.things);
+      sb.append(this.ts);
     }
     first = false;
     sb.append(")");
@@ -336,21 +336,21 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
           break;
         }
         switch (schemeField.id) {
-          case 1: // THINGS
+          case 1: // TS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                struct.things = new ArrayList<Thing>(_list0.size);
+                struct.ts = new ArrayList<Thing>(_list0.size);
                 for (int _i1 = 0; _i1 < _list0.size; ++_i1)
                 {
                   Thing _elem2; // required
                   _elem2 = new Thing();
                   _elem2.read(iprot);
-                  struct.things.add(_elem2);
+                  struct.ts.add(_elem2);
                 }
                 iprot.readListEnd();
               }
-              struct.setThingsIsSet(true);
+              struct.setTsIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -370,11 +370,11 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.things != null) {
-        oprot.writeFieldBegin(THINGS_FIELD_DESC);
+      if (struct.ts != null) {
+        oprot.writeFieldBegin(TS_FIELD_DESC);
         {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.things.size()));
-          for (Thing _iter3 : struct.things)
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.ts.size()));
+          for (Thing _iter3 : struct.ts)
           {
             _iter3.write(oprot);
           }
@@ -400,14 +400,14 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     public void write(org.apache.thrift.protocol.TProtocol prot, Things struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetThings()) {
+      if (struct.isSetTs()) {
         optionals.set(0);
       }
       oprot.writeBitSet(optionals, 1);
-      if (struct.isSetThings()) {
+      if (struct.isSetTs()) {
         {
-          oprot.writeI32(struct.things.size());
-          for (Thing _iter4 : struct.things)
+          oprot.writeI32(struct.ts.size());
+          for (Thing _iter4 : struct.ts)
           {
             _iter4.write(oprot);
           }
@@ -422,16 +422,16 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
       if (incoming.get(0)) {
         {
           org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.things = new ArrayList<Thing>(_list5.size);
+          struct.ts = new ArrayList<Thing>(_list5.size);
           for (int _i6 = 0; _i6 < _list5.size; ++_i6)
           {
             Thing _elem7; // required
             _elem7 = new Thing();
             _elem7.read(iprot);
-            struct.things.add(_elem7);
+            struct.ts.add(_elem7);
           }
         }
-        struct.setThingsIsSet(true);
+        struct.setTsIsSet(true);
       }
     }
   }

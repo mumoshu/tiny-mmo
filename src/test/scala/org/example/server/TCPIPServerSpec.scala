@@ -263,7 +263,7 @@ case class GameBotImpl(serverAddress: InetSocketAddress, playerName: String = "m
     Await.result(
       (client ? FindAllThings)
         .mapTo[serializers.thrift.Things]
-        .map(_.things.asScala.toList.map(_.id).map(StringIdentity)),
+        .map(_.ts.asScala.toList.map(_.id).map(StringIdentity)),
       duration)
   )
   def getPos(id: Identity): Option[Position] = Some(Await.result((client ? GetPosition(id)).mapTo[Position], duration))

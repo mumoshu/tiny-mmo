@@ -12,12 +12,20 @@ import scala.concurrent.stm._
 import akka.agent.Agent
 import java.util
 import serializers.thrift
+import org.slf4j.LoggerFactory
+import thrift.YourId
 
 /**
  * See http://stackoverflow.com/questions/12959709/send-a-tcp-ip-message-akka-actor
  * and http://doc.akka.io/docs/akka/snapshot/scala/io.html
  */
-object TCPIPServer {
+
+object TCPIPServer extends TCPIPServer
+
+class TCPIPServer {
+
+  val log = LoggerFactory.getLogger(classOf[TCPIPServer])
+
   implicit val sys = ActorSystem("telnet")
 
   val protocol = new Protocol {
@@ -51,6 +59,7 @@ object TCPIPServer {
   val FrameDecoder: IO.Iteratee[ByteString] = for {
     frameLenBytes <- IO.take(4)
     frameLen = frameLenBytes.iterator.getInt
+    _ = log.debug("frameLen: " + frameLen)
     frame <- IO.take(frameLen)
   } yield {
 //    val in = frame.iterator
@@ -140,8 +149,10 @@ object TCPIPServer {
             }
             publish(m)
           case m: serializers.thrift.MyId =>
-            val data = protocol.serialize(new serializers.thrift.YourId(id.str))
+            val m: YourId = new serializers.thrift.YourId(id.str)
+            val data = protocol.serialize(m)
             handle.asWritable.write(FrameEncoder(data))
+            log.debug("Wrote: " + m)
           case m: serializers.thrift.GetPosition =>
             val targetId = StringIdentity(m.id)
             val p = world.get().things.find(_.id == targetId).get.position
@@ -151,12 +162,12 @@ object TCPIPServer {
             log.debug("Wrote: " + rep)
           case m: serializers.thrift.FindAllThings =>
             val things = new serializers.thrift.Things()
-            things.things = new java.util.ArrayList[serializers.thrift.Thing]()
+            things.ts = new java.util.ArrayList[serializers.thrift.Thing]()
             world.get().things.foreach { t =>
             // Things other than the client are included
               if (t.id != id) {
                 val p = new serializers.thrift.Position(t.id.str, t.position.x.toDouble, t.position.z.toDouble)
-                things.things.add(new serializers.thrift.Thing(t.id.str, p))
+                things.ts.add(new serializers.thrift.Thing(t.id.str, p))
               }
             }
             val data = protocol.serialize(things)

@@ -6,4 +6,5 @@ To run and test it use SBT invoke: 'sbt run'
 
 = Generate source code from the Thrift file
 
-  thrift --gen java src/main/thrift/runner.thrift
+  thrift --gen java -o src/main/thrift src/main/thrift/runner.thrift
+  thrift --gen csharp -o src/main/csharp src/main/thrift/runner.thrift

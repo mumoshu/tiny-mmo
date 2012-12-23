@@ -109,6 +109,6 @@ struct Thing {
 }
 
 struct Things {
-  1: list<Thing> things,
+  1: list<Thing> ts,
 }
 
