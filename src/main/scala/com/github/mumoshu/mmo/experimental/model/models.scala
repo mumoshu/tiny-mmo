@@ -127,6 +127,7 @@ object Example {
           // supervision
           akkaRouter.route(m)
         }
+        world
       }
     )
   }
