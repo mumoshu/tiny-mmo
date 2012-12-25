@@ -19,6 +19,7 @@ object MMOBuild extends Build {
         "com.typesafe.akka" %% "akka-zeromq" % "2.1.0-RC3" cross CrossVersion.full,
         "com.typesafe.akka" %% "akka-agent" % "2.1.0-RC3" cross CrossVersion.full,
         "com.typesafe.akka" %% "akka-slf4j" % "2.1.0-RC3" cross CrossVersion.full,
+        "org.scala-lang" % "scala-reflect" % "2.10.0-RC3",
         "org.apache.thrift" % "libthrift" % "0.9.0",
         "org.slf4j" % "slf4j-log4j12" % "1.6.6",
         "com.github.tmingos" % "casbah_2.10" % "2.5.0-SNAPSHOT",
