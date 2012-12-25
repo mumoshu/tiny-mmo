@@ -123,7 +123,8 @@ object Example {
       messages.foldLeft(world) { (world, message) =>
         val (world, newMessages) = change(world, message)
         newMessages.foreach { m =>
-          // Send events to clients or AIs in concern (in sight, related, etc.)
+          // Send events to clients or AIs in concern (in sight, related, etc.), or just randomly to any client for
+          // supervision
           akkaRouter.route(m)
         }
       }
@@ -148,6 +149,18 @@ object Example {
         // `arise` returns new world created creature, and new messages to be replied to the original sender
         world.arise[Creature](id) {
           Creatures.create(id = id, creatureId = m.creatureId)
+        }
+      case m: DelegateCreaturePositioning =>
+        (world, Seq(m))
+      case m: DelegateTreasurePositioning =>
+        (world, Seq(m))
+      case m: PositionCreature =>
+        world.occur[Creature](id) { c =>
+          c.moveTo(m.position).appear()
+        }
+      case m: PositionTreasure =>
+        world.occur[Treasure])(id) { t =>
+          t.moveTo(m.position).appear()
         }
       case m: Projectile =>
         world.arise[Projectile)(id) {
