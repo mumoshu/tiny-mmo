@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,46 +12,30 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Position implements org.apache.thrift.TBase<Position, Position._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Position");
+public class YourId implements org.apache.thrift.TBase<YourId, YourId._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("YourId");
 
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
-  private static final org.apache.thrift.protocol.TField Z_FIELD_DESC = new org.apache.thrift.protocol.TField("z", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new PositionStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new PositionTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new YourIdStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new YourIdTupleSchemeFactory());
   }
 
   public String id; // required
-  public double x; // required
-  public double z; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
-    X((short)2, "x"),
-    Z((short)3, "z");
+    ID((short)1, "id");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -68,10 +52,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
       switch(fieldId) {
         case 1: // ID
           return ID;
-        case 2: // X
-          return X;
-        case 3: // Z
-          return Z;
         default:
           return null;
       }
@@ -112,68 +92,48 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
   }
 
   // isset id assignments
-  private static final int __X_ISSET_ID = 0;
-  private static final int __Z_ISSET_ID = 1;
-  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.Z, new org.apache.thrift.meta_data.FieldMetaData("z", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Position.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(YourId.class, metaDataMap);
   }
 
-  public Position() {
+  public YourId() {
   }
 
-  public Position(
-    String id,
-    double x,
-    double z)
+  public YourId(
+    String id)
   {
     this();
     this.id = id;
-    this.x = x;
-    setXIsSet(true);
-    this.z = z;
-    setZIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Position(Position other) {
-    __isset_bitfield = other.__isset_bitfield;
+  public YourId(YourId other) {
     if (other.isSetId()) {
       this.id = other.id;
     }
-    this.x = other.x;
-    this.z = other.z;
   }
 
-  public Position deepCopy() {
-    return new Position(this);
+  public YourId deepCopy() {
+    return new YourId(this);
   }
 
   @Override
   public void clear() {
     this.id = null;
-    setXIsSet(false);
-    this.x = 0.0;
-    setZIsSet(false);
-    this.z = 0.0;
   }
 
   public String getId() {
     return this.id;
   }
 
-  public Position setId(String id) {
+  public YourId setId(String id) {
     this.id = id;
     return this;
   }
@@ -193,52 +153,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     }
   }
 
-  public double getX() {
-    return this.x;
-  }
-
-  public Position setX(double x) {
-    this.x = x;
-    setXIsSet(true);
-    return this;
-  }
-
-  public void unsetX() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __X_ISSET_ID);
-  }
-
-  /** Returns true if field x is set (has been assigned a value) and false otherwise */
-  public boolean isSetX() {
-    return EncodingUtils.testBit(__isset_bitfield, __X_ISSET_ID);
-  }
-
-  public void setXIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __X_ISSET_ID, value);
-  }
-
-  public double getZ() {
-    return this.z;
-  }
-
-  public Position setZ(double z) {
-    this.z = z;
-    setZIsSet(true);
-    return this;
-  }
-
-  public void unsetZ() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __Z_ISSET_ID);
-  }
-
-  /** Returns true if field z is set (has been assigned a value) and false otherwise */
-  public boolean isSetZ() {
-    return EncodingUtils.testBit(__isset_bitfield, __Z_ISSET_ID);
-  }
-
-  public void setZIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __Z_ISSET_ID, value);
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ID:
@@ -249,22 +163,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
       }
       break;
 
-    case X:
-      if (value == null) {
-        unsetX();
-      } else {
-        setX((Double)value);
-      }
-      break;
-
-    case Z:
-      if (value == null) {
-        unsetZ();
-      } else {
-        setZ((Double)value);
-      }
-      break;
-
     }
   }
 
@@ -272,12 +170,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     switch (field) {
     case ID:
       return getId();
-
-    case X:
-      return Double.valueOf(getX());
-
-    case Z:
-      return Double.valueOf(getZ());
 
     }
     throw new IllegalStateException();
@@ -292,10 +184,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     switch (field) {
     case ID:
       return isSetId();
-    case X:
-      return isSetX();
-    case Z:
-      return isSetZ();
     }
     throw new IllegalStateException();
   }
@@ -304,12 +192,12 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Position)
-      return this.equals((Position)that);
+    if (that instanceof YourId)
+      return this.equals((YourId)that);
     return false;
   }
 
-  public boolean equals(Position that) {
+  public boolean equals(YourId that) {
     if (that == null)
       return false;
 
@@ -322,24 +210,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
         return false;
     }
 
-    boolean this_present_x = true;
-    boolean that_present_x = true;
-    if (this_present_x || that_present_x) {
-      if (!(this_present_x && that_present_x))
-        return false;
-      if (this.x != that.x)
-        return false;
-    }
-
-    boolean this_present_z = true;
-    boolean that_present_z = true;
-    if (this_present_z || that_present_z) {
-      if (!(this_present_z && that_present_z))
-        return false;
-      if (this.z != that.z)
-        return false;
-    }
-
     return true;
   }
 
@@ -348,13 +218,13 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     return 0;
   }
 
-  public int compareTo(Position other) {
+  public int compareTo(YourId other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Position typedOther = (Position)other;
+    YourId typedOther = (YourId)other;
 
     lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
@@ -362,26 +232,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     }
     if (isSetId()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetX()).compareTo(typedOther.isSetX());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetX()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.x, typedOther.x);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetZ()).compareTo(typedOther.isSetZ());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetZ()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.z, typedOther.z);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -403,7 +253,7 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Position(");
+    StringBuilder sb = new StringBuilder("YourId(");
     boolean first = true;
 
     sb.append("id:");
@@ -412,14 +262,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
     } else {
       sb.append(this.id);
     }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("x:");
-    sb.append(this.x);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("z:");
-    sb.append(this.z);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -440,23 +282,21 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
     }
   }
 
-  private static class PositionStandardSchemeFactory implements SchemeFactory {
-    public PositionStandardScheme getScheme() {
-      return new PositionStandardScheme();
+  private static class YourIdStandardSchemeFactory implements SchemeFactory {
+    public YourIdStandardScheme getScheme() {
+      return new YourIdStandardScheme();
     }
   }
 
-  private static class PositionStandardScheme extends StandardScheme<Position> {
+  private static class YourIdStandardScheme extends StandardScheme<YourId> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Position struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, YourId struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -474,22 +314,6 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // X
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.x = iprot.readDouble();
-              struct.setXIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 3: // Z
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.z = iprot.readDouble();
-              struct.setZIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -501,7 +325,7 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Position struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, YourId struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -510,66 +334,40 @@ public class Position implements org.apache.thrift.TBase<Position, Position._Fie
         oprot.writeString(struct.id);
         oprot.writeFieldEnd();
       }
-      oprot.writeFieldBegin(X_FIELD_DESC);
-      oprot.writeDouble(struct.x);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(Z_FIELD_DESC);
-      oprot.writeDouble(struct.z);
-      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class PositionTupleSchemeFactory implements SchemeFactory {
-    public PositionTupleScheme getScheme() {
-      return new PositionTupleScheme();
+  private static class YourIdTupleSchemeFactory implements SchemeFactory {
+    public YourIdTupleScheme getScheme() {
+      return new YourIdTupleScheme();
     }
   }
 
-  private static class PositionTupleScheme extends TupleScheme<Position> {
+  private static class YourIdTupleScheme extends TupleScheme<YourId> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Position struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, YourId struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetId()) {
         optionals.set(0);
       }
-      if (struct.isSetX()) {
-        optionals.set(1);
-      }
-      if (struct.isSetZ()) {
-        optionals.set(2);
-      }
-      oprot.writeBitSet(optionals, 3);
+      oprot.writeBitSet(optionals, 1);
       if (struct.isSetId()) {
         oprot.writeString(struct.id);
-      }
-      if (struct.isSetX()) {
-        oprot.writeDouble(struct.x);
-      }
-      if (struct.isSetZ()) {
-        oprot.writeDouble(struct.z);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Position struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, YourId struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(3);
+      BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
         struct.id = iprot.readString();
         struct.setIdIsSet(true);
-      }
-      if (incoming.get(1)) {
-        struct.x = iprot.readDouble();
-        struct.setXIsSet(true);
-      }
-      if (incoming.get(2)) {
-        struct.z = iprot.readDouble();
-        struct.setZIsSet(true);
       }
     }
   }

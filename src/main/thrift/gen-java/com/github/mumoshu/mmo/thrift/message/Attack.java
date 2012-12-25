@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,43 +12,33 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Thing");
+public class Attack implements org.apache.thrift.TBase<Attack, Attack._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Attack");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("position", org.apache.thrift.protocol.TType.STRUCT, (short)2);
+  private static final org.apache.thrift.protocol.TField ATTACKER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("attackerId", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField TARGET_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("targetId", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new ThingStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new ThingTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new AttackStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new AttackTupleSchemeFactory());
   }
 
-  public String id; // required
-  public Position position; // required
+  public String attackerId; // required
+  public String targetId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id"),
-    POSITION((short)2, "position");
+    ATTACKER_ID((short)1, "attackerId"),
+    TARGET_ID((short)2, "targetId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -63,10 +53,10 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
-        case 2: // POSITION
-          return POSITION;
+        case 1: // ATTACKER_ID
+          return ATTACKER_ID;
+        case 2: // TARGET_ID
+          return TARGET_ID;
         default:
           return null;
       }
@@ -110,111 +100,111 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.ATTACKER_ID, new org.apache.thrift.meta_data.FieldMetaData("attackerId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.POSITION, new org.apache.thrift.meta_data.FieldMetaData("position", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Position.class)));
+    tmpMap.put(_Fields.TARGET_ID, new org.apache.thrift.meta_data.FieldMetaData("targetId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Thing.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Attack.class, metaDataMap);
   }
 
-  public Thing() {
+  public Attack() {
   }
 
-  public Thing(
-    String id,
-    Position position)
+  public Attack(
+    String attackerId,
+    String targetId)
   {
     this();
-    this.id = id;
-    this.position = position;
+    this.attackerId = attackerId;
+    this.targetId = targetId;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Thing(Thing other) {
-    if (other.isSetId()) {
-      this.id = other.id;
+  public Attack(Attack other) {
+    if (other.isSetAttackerId()) {
+      this.attackerId = other.attackerId;
     }
-    if (other.isSetPosition()) {
-      this.position = new Position(other.position);
+    if (other.isSetTargetId()) {
+      this.targetId = other.targetId;
     }
   }
 
-  public Thing deepCopy() {
-    return new Thing(this);
+  public Attack deepCopy() {
+    return new Attack(this);
   }
 
   @Override
   public void clear() {
-    this.id = null;
-    this.position = null;
+    this.attackerId = null;
+    this.targetId = null;
   }
 
-  public String getId() {
-    return this.id;
+  public String getAttackerId() {
+    return this.attackerId;
   }
 
-  public Thing setId(String id) {
-    this.id = id;
+  public Attack setAttackerId(String attackerId) {
+    this.attackerId = attackerId;
     return this;
   }
 
-  public void unsetId() {
-    this.id = null;
+  public void unsetAttackerId() {
+    this.attackerId = null;
   }
 
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return this.id != null;
+  /** Returns true if field attackerId is set (has been assigned a value) and false otherwise */
+  public boolean isSetAttackerId() {
+    return this.attackerId != null;
   }
 
-  public void setIdIsSet(boolean value) {
+  public void setAttackerIdIsSet(boolean value) {
     if (!value) {
-      this.id = null;
+      this.attackerId = null;
     }
   }
 
-  public Position getPosition() {
-    return this.position;
+  public String getTargetId() {
+    return this.targetId;
   }
 
-  public Thing setPosition(Position position) {
-    this.position = position;
+  public Attack setTargetId(String targetId) {
+    this.targetId = targetId;
     return this;
   }
 
-  public void unsetPosition() {
-    this.position = null;
+  public void unsetTargetId() {
+    this.targetId = null;
   }
 
-  /** Returns true if field position is set (has been assigned a value) and false otherwise */
-  public boolean isSetPosition() {
-    return this.position != null;
+  /** Returns true if field targetId is set (has been assigned a value) and false otherwise */
+  public boolean isSetTargetId() {
+    return this.targetId != null;
   }
 
-  public void setPositionIsSet(boolean value) {
+  public void setTargetIdIsSet(boolean value) {
     if (!value) {
-      this.position = null;
+      this.targetId = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
+    case ATTACKER_ID:
       if (value == null) {
-        unsetId();
+        unsetAttackerId();
       } else {
-        setId((String)value);
+        setAttackerId((String)value);
       }
       break;
 
-    case POSITION:
+    case TARGET_ID:
       if (value == null) {
-        unsetPosition();
+        unsetTargetId();
       } else {
-        setPosition((Position)value);
+        setTargetId((String)value);
       }
       break;
 
@@ -223,11 +213,11 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return getId();
+    case ATTACKER_ID:
+      return getAttackerId();
 
-    case POSITION:
-      return getPosition();
+    case TARGET_ID:
+      return getTargetId();
 
     }
     throw new IllegalStateException();
@@ -240,10 +230,10 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
-    case POSITION:
-      return isSetPosition();
+    case ATTACKER_ID:
+      return isSetAttackerId();
+    case TARGET_ID:
+      return isSetTargetId();
     }
     throw new IllegalStateException();
   }
@@ -252,30 +242,30 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Thing)
-      return this.equals((Thing)that);
+    if (that instanceof Attack)
+      return this.equals((Attack)that);
     return false;
   }
 
-  public boolean equals(Thing that) {
+  public boolean equals(Attack that) {
     if (that == null)
       return false;
 
-    boolean this_present_id = true && this.isSetId();
-    boolean that_present_id = true && that.isSetId();
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
+    boolean this_present_attackerId = true && this.isSetAttackerId();
+    boolean that_present_attackerId = true && that.isSetAttackerId();
+    if (this_present_attackerId || that_present_attackerId) {
+      if (!(this_present_attackerId && that_present_attackerId))
         return false;
-      if (!this.id.equals(that.id))
+      if (!this.attackerId.equals(that.attackerId))
         return false;
     }
 
-    boolean this_present_position = true && this.isSetPosition();
-    boolean that_present_position = true && that.isSetPosition();
-    if (this_present_position || that_present_position) {
-      if (!(this_present_position && that_present_position))
+    boolean this_present_targetId = true && this.isSetTargetId();
+    boolean that_present_targetId = true && that.isSetTargetId();
+    if (this_present_targetId || that_present_targetId) {
+      if (!(this_present_targetId && that_present_targetId))
         return false;
-      if (!this.position.equals(that.position))
+      if (!this.targetId.equals(that.targetId))
         return false;
     }
 
@@ -287,30 +277,30 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
     return 0;
   }
 
-  public int compareTo(Thing other) {
+  public int compareTo(Attack other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Thing typedOther = (Thing)other;
+    Attack typedOther = (Attack)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+    lastComparison = Boolean.valueOf(isSetAttackerId()).compareTo(typedOther.isSetAttackerId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+    if (isSetAttackerId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.attackerId, typedOther.attackerId);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPosition()).compareTo(typedOther.isSetPosition());
+    lastComparison = Boolean.valueOf(isSetTargetId()).compareTo(typedOther.isSetTargetId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetPosition()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.position, typedOther.position);
+    if (isSetTargetId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.targetId, typedOther.targetId);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -332,22 +322,22 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Thing(");
+    StringBuilder sb = new StringBuilder("Attack(");
     boolean first = true;
 
-    sb.append("id:");
-    if (this.id == null) {
+    sb.append("attackerId:");
+    if (this.attackerId == null) {
       sb.append("null");
     } else {
-      sb.append(this.id);
+      sb.append(this.attackerId);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("position:");
-    if (this.position == null) {
+    sb.append("targetId:");
+    if (this.targetId == null) {
       sb.append("null");
     } else {
-      sb.append(this.position);
+      sb.append(this.targetId);
     }
     first = false;
     sb.append(")");
@@ -357,9 +347,6 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
-    if (position != null) {
-      position.validate();
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -378,15 +365,15 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
     }
   }
 
-  private static class ThingStandardSchemeFactory implements SchemeFactory {
-    public ThingStandardScheme getScheme() {
-      return new ThingStandardScheme();
+  private static class AttackStandardSchemeFactory implements SchemeFactory {
+    public AttackStandardScheme getScheme() {
+      return new AttackStandardScheme();
     }
   }
 
-  private static class ThingStandardScheme extends StandardScheme<Thing> {
+  private static class AttackStandardScheme extends StandardScheme<Attack> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Thing struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Attack struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -396,19 +383,18 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
           break;
         }
         switch (schemeField.id) {
-          case 1: // ID
+          case 1: // ATTACKER_ID
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.id = iprot.readString();
-              struct.setIdIsSet(true);
+              struct.attackerId = iprot.readString();
+              struct.setAttackerIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // POSITION
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.position = new Position();
-              struct.position.read(iprot);
-              struct.setPositionIsSet(true);
+          case 2: // TARGET_ID
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.targetId = iprot.readString();
+              struct.setTargetIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -424,18 +410,18 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Thing struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Attack struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.id != null) {
-        oprot.writeFieldBegin(ID_FIELD_DESC);
-        oprot.writeString(struct.id);
+      if (struct.attackerId != null) {
+        oprot.writeFieldBegin(ATTACKER_ID_FIELD_DESC);
+        oprot.writeString(struct.attackerId);
         oprot.writeFieldEnd();
       }
-      if (struct.position != null) {
-        oprot.writeFieldBegin(POSITION_FIELD_DESC);
-        struct.position.write(oprot);
+      if (struct.targetId != null) {
+        oprot.writeFieldBegin(TARGET_ID_FIELD_DESC);
+        oprot.writeString(struct.targetId);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -444,45 +430,44 @@ public class Thing implements org.apache.thrift.TBase<Thing, Thing._Fields>, jav
 
   }
 
-  private static class ThingTupleSchemeFactory implements SchemeFactory {
-    public ThingTupleScheme getScheme() {
-      return new ThingTupleScheme();
+  private static class AttackTupleSchemeFactory implements SchemeFactory {
+    public AttackTupleScheme getScheme() {
+      return new AttackTupleScheme();
     }
   }
 
-  private static class ThingTupleScheme extends TupleScheme<Thing> {
+  private static class AttackTupleScheme extends TupleScheme<Attack> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Thing struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Attack struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetId()) {
+      if (struct.isSetAttackerId()) {
         optionals.set(0);
       }
-      if (struct.isSetPosition()) {
+      if (struct.isSetTargetId()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetId()) {
-        oprot.writeString(struct.id);
+      if (struct.isSetAttackerId()) {
+        oprot.writeString(struct.attackerId);
       }
-      if (struct.isSetPosition()) {
-        struct.position.write(oprot);
+      if (struct.isSetTargetId()) {
+        oprot.writeString(struct.targetId);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Thing struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Attack struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.id = iprot.readString();
-        struct.setIdIsSet(true);
+        struct.attackerId = iprot.readString();
+        struct.setAttackerIdIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.position = new Position();
-        struct.position.read(iprot);
-        struct.setPositionIsSet(true);
+        struct.targetId = iprot.readString();
+        struct.setTargetIdIsSet(true);
       }
     }
   }

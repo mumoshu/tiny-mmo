@@ -1,12 +1,11 @@
 package com.github.mumoshu.mmo.testing
 
 import collection.mutable
-import serializers.thrift
-import thrift._
+import com.github.mumoshu.mmo.thrift.message._
 
 // This is mutable
 case class RecordingGameClientObserver(observed: collection.mutable.MutableList[AnyRef] = mutable.MutableList.empty) extends GameClientObserver {
-  def observe(t: serializers.thrift.Join) {
+  def observe(t: Join) {
     observed += t
   }
 
@@ -30,7 +29,7 @@ case class RecordingGameClientObserver(observed: collection.mutable.MutableList[
     observed += t
   }
 
-  def observe(t: thrift.Position) {
+  def observe(t: Position) {
     observed += t
   }
 

@@ -1,5 +1,5 @@
-namespace java serializers.thrift
-namespace csharp serializers.thrift
+namespace java com.github.mumoshu.mmo.thrift.message
+namespace csharp Thrift.Messages
 
 typedef i32 int
 typedef i64 long

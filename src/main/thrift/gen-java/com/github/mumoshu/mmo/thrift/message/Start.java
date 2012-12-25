@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,40 +12,27 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
-import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Die");
+public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Start");
 
-  private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new DieStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new DieTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new StartStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new StartTupleSchemeFactory());
   }
 
-  public double x; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    X((short)1, "x");
+;
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +47,6 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // X
-          return X;
         default:
           return null;
       }
@@ -100,89 +85,37 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
       return _fieldName;
     }
   }
-
-  // isset id assignments
-  private static final int __X_ISSET_ID = 0;
-  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Die.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Start.class, metaDataMap);
   }
 
-  public Die() {
-  }
-
-  public Die(
-    double x)
-  {
-    this();
-    this.x = x;
-    setXIsSet(true);
+  public Start() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Die(Die other) {
-    __isset_bitfield = other.__isset_bitfield;
-    this.x = other.x;
+  public Start(Start other) {
   }
 
-  public Die deepCopy() {
-    return new Die(this);
+  public Start deepCopy() {
+    return new Start(this);
   }
 
   @Override
   public void clear() {
-    setXIsSet(false);
-    this.x = 0.0;
-  }
-
-  public double getX() {
-    return this.x;
-  }
-
-  public Die setX(double x) {
-    this.x = x;
-    setXIsSet(true);
-    return this;
-  }
-
-  public void unsetX() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __X_ISSET_ID);
-  }
-
-  /** Returns true if field x is set (has been assigned a value) and false otherwise */
-  public boolean isSetX() {
-    return EncodingUtils.testBit(__isset_bitfield, __X_ISSET_ID);
-  }
-
-  public void setXIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __X_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case X:
-      if (value == null) {
-        unsetX();
-      } else {
-        setX((Double)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case X:
-      return Double.valueOf(getX());
-
     }
     throw new IllegalStateException();
   }
@@ -194,8 +127,6 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     }
 
     switch (field) {
-    case X:
-      return isSetX();
     }
     throw new IllegalStateException();
   }
@@ -204,23 +135,14 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Die)
-      return this.equals((Die)that);
+    if (that instanceof Start)
+      return this.equals((Start)that);
     return false;
   }
 
-  public boolean equals(Die that) {
+  public boolean equals(Start that) {
     if (that == null)
       return false;
-
-    boolean this_present_x = true;
-    boolean that_present_x = true;
-    if (this_present_x || that_present_x) {
-      if (!(this_present_x && that_present_x))
-        return false;
-      if (this.x != that.x)
-        return false;
-    }
 
     return true;
   }
@@ -230,24 +152,14 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
     return 0;
   }
 
-  public int compareTo(Die other) {
+  public int compareTo(Start other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Die typedOther = (Die)other;
+    Start typedOther = (Start)other;
 
-    lastComparison = Boolean.valueOf(isSetX()).compareTo(typedOther.isSetX());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetX()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.x, typedOther.x);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -265,12 +177,9 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Die(");
+    StringBuilder sb = new StringBuilder("Start(");
     boolean first = true;
 
-    sb.append("x:");
-    sb.append(this.x);
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -290,23 +199,21 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
-      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
     }
   }
 
-  private static class DieStandardSchemeFactory implements SchemeFactory {
-    public DieStandardScheme getScheme() {
-      return new DieStandardScheme();
+  private static class StartStandardSchemeFactory implements SchemeFactory {
+    public StartStandardScheme getScheme() {
+      return new StartStandardScheme();
     }
   }
 
-  private static class DieStandardScheme extends StandardScheme<Die> {
+  private static class StartStandardScheme extends StandardScheme<Start> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Start struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -316,14 +223,6 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
           break;
         }
         switch (schemeField.id) {
-          case 1: // X
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.x = iprot.readDouble();
-              struct.setXIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -335,48 +234,32 @@ public class Die implements org.apache.thrift.TBase<Die, Die._Fields>, java.io.S
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Start struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(X_FIELD_DESC);
-      oprot.writeDouble(struct.x);
-      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class DieTupleSchemeFactory implements SchemeFactory {
-    public DieTupleScheme getScheme() {
-      return new DieTupleScheme();
+  private static class StartTupleSchemeFactory implements SchemeFactory {
+    public StartTupleScheme getScheme() {
+      return new StartTupleScheme();
     }
   }
 
-  private static class DieTupleScheme extends TupleScheme<Die> {
+  private static class StartTupleScheme extends TupleScheme<Start> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Start struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
-      BitSet optionals = new BitSet();
-      if (struct.isSetX()) {
-        optionals.set(0);
-      }
-      oprot.writeBitSet(optionals, 1);
-      if (struct.isSetX()) {
-        oprot.writeDouble(struct.x);
-      }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Die struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Start struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
-      if (incoming.get(0)) {
-        struct.x = iprot.readDouble();
-        struct.setXIsSet(true);
-      }
     }
   }
 

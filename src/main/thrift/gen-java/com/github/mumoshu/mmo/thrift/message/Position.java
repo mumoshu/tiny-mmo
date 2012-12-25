@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,26 +12,17 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MoveTo");
+public class Position implements org.apache.thrift.TBase<Position, Position._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Position");
 
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
@@ -39,8 +30,8 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new MoveToStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new MoveToTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new PositionStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new PositionTupleSchemeFactory());
   }
 
   public String id; // required
@@ -125,13 +116,13 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     tmpMap.put(_Fields.Z, new org.apache.thrift.meta_data.FieldMetaData("z", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MoveTo.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Position.class, metaDataMap);
   }
 
-  public MoveTo() {
+  public Position() {
   }
 
-  public MoveTo(
+  public Position(
     String id,
     double x,
     double z)
@@ -147,7 +138,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MoveTo(MoveTo other) {
+  public Position(Position other) {
     __isset_bitfield = other.__isset_bitfield;
     if (other.isSetId()) {
       this.id = other.id;
@@ -156,8 +147,8 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     this.z = other.z;
   }
 
-  public MoveTo deepCopy() {
-    return new MoveTo(this);
+  public Position deepCopy() {
+    return new Position(this);
   }
 
   @Override
@@ -173,7 +164,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     return this.id;
   }
 
-  public MoveTo setId(String id) {
+  public Position setId(String id) {
     this.id = id;
     return this;
   }
@@ -197,7 +188,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     return this.x;
   }
 
-  public MoveTo setX(double x) {
+  public Position setX(double x) {
     this.x = x;
     setXIsSet(true);
     return this;
@@ -220,7 +211,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     return this.z;
   }
 
-  public MoveTo setZ(double z) {
+  public Position setZ(double z) {
     this.z = z;
     setZIsSet(true);
     return this;
@@ -304,12 +295,12 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof MoveTo)
-      return this.equals((MoveTo)that);
+    if (that instanceof Position)
+      return this.equals((Position)that);
     return false;
   }
 
-  public boolean equals(MoveTo that) {
+  public boolean equals(Position that) {
     if (that == null)
       return false;
 
@@ -348,13 +339,13 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     return 0;
   }
 
-  public int compareTo(MoveTo other) {
+  public int compareTo(Position other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    MoveTo typedOther = (MoveTo)other;
+    Position typedOther = (Position)other;
 
     lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
@@ -403,7 +394,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("MoveTo(");
+    StringBuilder sb = new StringBuilder("Position(");
     boolean first = true;
 
     sb.append("id:");
@@ -448,15 +439,15 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     }
   }
 
-  private static class MoveToStandardSchemeFactory implements SchemeFactory {
-    public MoveToStandardScheme getScheme() {
-      return new MoveToStandardScheme();
+  private static class PositionStandardSchemeFactory implements SchemeFactory {
+    public PositionStandardScheme getScheme() {
+      return new PositionStandardScheme();
     }
   }
 
-  private static class MoveToStandardScheme extends StandardScheme<MoveTo> {
+  private static class PositionStandardScheme extends StandardScheme<Position> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, MoveTo struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Position struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -501,7 +492,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, MoveTo struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Position struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -522,16 +513,16 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
 
   }
 
-  private static class MoveToTupleSchemeFactory implements SchemeFactory {
-    public MoveToTupleScheme getScheme() {
-      return new MoveToTupleScheme();
+  private static class PositionTupleSchemeFactory implements SchemeFactory {
+    public PositionTupleScheme getScheme() {
+      return new PositionTupleScheme();
     }
   }
 
-  private static class MoveToTupleScheme extends TupleScheme<MoveTo> {
+  private static class PositionTupleScheme extends TupleScheme<Position> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, MoveTo struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Position struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetId()) {
@@ -556,7 +547,7 @@ public class MoveTo implements org.apache.thrift.TBase<MoveTo, MoveTo._Fields>, 
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, MoveTo struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Position struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {

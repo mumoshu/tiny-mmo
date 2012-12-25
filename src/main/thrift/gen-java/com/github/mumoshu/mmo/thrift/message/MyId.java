@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,40 +12,27 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
-import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Joined");
+public class MyId implements org.apache.thrift.TBase<MyId, MyId._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("MyId");
 
-  private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new JoinedStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new JoinedTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new MyIdStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new MyIdTupleSchemeFactory());
   }
 
-  public String id; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id");
+;
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +47,6 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // ID
-          return ID;
         default:
           return null;
       }
@@ -100,87 +85,37 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
       return _fieldName;
     }
   }
-
-  // isset id assignments
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Joined.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(MyId.class, metaDataMap);
   }
 
-  public Joined() {
-  }
-
-  public Joined(
-    String id)
-  {
-    this();
-    this.id = id;
+  public MyId() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Joined(Joined other) {
-    if (other.isSetId()) {
-      this.id = other.id;
-    }
+  public MyId(MyId other) {
   }
 
-  public Joined deepCopy() {
-    return new Joined(this);
+  public MyId deepCopy() {
+    return new MyId(this);
   }
 
   @Override
   public void clear() {
-    this.id = null;
-  }
-
-  public String getId() {
-    return this.id;
-  }
-
-  public Joined setId(String id) {
-    this.id = id;
-    return this;
-  }
-
-  public void unsetId() {
-    this.id = null;
-  }
-
-  /** Returns true if field id is set (has been assigned a value) and false otherwise */
-  public boolean isSetId() {
-    return this.id != null;
-  }
-
-  public void setIdIsSet(boolean value) {
-    if (!value) {
-      this.id = null;
-    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ID:
-      if (value == null) {
-        unsetId();
-      } else {
-        setId((String)value);
-      }
-      break;
-
     }
   }
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ID:
-      return getId();
-
     }
     throw new IllegalStateException();
   }
@@ -192,8 +127,6 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
     }
 
     switch (field) {
-    case ID:
-      return isSetId();
     }
     throw new IllegalStateException();
   }
@@ -202,23 +135,14 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Joined)
-      return this.equals((Joined)that);
+    if (that instanceof MyId)
+      return this.equals((MyId)that);
     return false;
   }
 
-  public boolean equals(Joined that) {
+  public boolean equals(MyId that) {
     if (that == null)
       return false;
-
-    boolean this_present_id = true && this.isSetId();
-    boolean that_present_id = true && that.isSetId();
-    if (this_present_id || that_present_id) {
-      if (!(this_present_id && that_present_id))
-        return false;
-      if (!this.id.equals(that.id))
-        return false;
-    }
 
     return true;
   }
@@ -228,24 +152,14 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
     return 0;
   }
 
-  public int compareTo(Joined other) {
+  public int compareTo(MyId other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Joined typedOther = (Joined)other;
+    MyId typedOther = (MyId)other;
 
-    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -263,16 +177,9 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Joined(");
+    StringBuilder sb = new StringBuilder("MyId(");
     boolean first = true;
 
-    sb.append("id:");
-    if (this.id == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.id);
-    }
-    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -298,15 +205,15 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
     }
   }
 
-  private static class JoinedStandardSchemeFactory implements SchemeFactory {
-    public JoinedStandardScheme getScheme() {
-      return new JoinedStandardScheme();
+  private static class MyIdStandardSchemeFactory implements SchemeFactory {
+    public MyIdStandardScheme getScheme() {
+      return new MyIdStandardScheme();
     }
   }
 
-  private static class JoinedStandardScheme extends StandardScheme<Joined> {
+  private static class MyIdStandardScheme extends StandardScheme<MyId> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Joined struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, MyId struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -316,14 +223,6 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
           break;
         }
         switch (schemeField.id) {
-          case 1: // ID
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.id = iprot.readString();
-              struct.setIdIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -335,50 +234,32 @@ public class Joined implements org.apache.thrift.TBase<Joined, Joined._Fields>, 
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Joined struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, MyId struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.id != null) {
-        oprot.writeFieldBegin(ID_FIELD_DESC);
-        oprot.writeString(struct.id);
-        oprot.writeFieldEnd();
-      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class JoinedTupleSchemeFactory implements SchemeFactory {
-    public JoinedTupleScheme getScheme() {
-      return new JoinedTupleScheme();
+  private static class MyIdTupleSchemeFactory implements SchemeFactory {
+    public MyIdTupleScheme getScheme() {
+      return new MyIdTupleScheme();
     }
   }
 
-  private static class JoinedTupleScheme extends TupleScheme<Joined> {
+  private static class MyIdTupleScheme extends TupleScheme<MyId> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Joined struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, MyId struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
-      BitSet optionals = new BitSet();
-      if (struct.isSetId()) {
-        optionals.set(0);
-      }
-      oprot.writeBitSet(optionals, 1);
-      if (struct.isSetId()) {
-        oprot.writeString(struct.id);
-      }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Joined struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, MyId struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
-      if (incoming.get(0)) {
-        struct.id = iprot.readString();
-        struct.setIdIsSet(true);
-      }
     }
   }
 

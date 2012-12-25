@@ -9,6 +9,7 @@ import akka.util.ByteString
 import com.github.mumoshu.mmo.models.world.world.{Position, StringIdentity}
 import com.github.mumoshu.mmo.server.TCPIPServer
 import com.github.mumoshu.mmo.server.TCPIPServer.FrameEncoder
+import com.github.mumoshu.mmo.thrift
 import java.net.InetSocketAddress
 
 import bot._
@@ -35,27 +36,27 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver) exten
 
   def processSingle(socket: IO.SocketHandle, bytes: ByteString) {
     deserialize(bytes) match {
-      case t: serializers.thrift.Join =>
+      case t: thrift.message.Join =>
         observer.observe(t)
-      case t: serializers.thrift.Leave =>
+      case t: thrift.message.Leave =>
         observer.observe(t)
-      case t: serializers.thrift.MoveTo =>
+      case t: thrift.message.MoveTo =>
         observer.observe(t)
-      case t: serializers.thrift.Attack =>
+      case t: thrift.message.Attack =>
         observer.observe(t)
-      case t: serializers.thrift.Say =>
+      case t: thrift.message.Say =>
         observer.observe(t)
-      case t: serializers.thrift.Shout =>
+      case t: thrift.message.Shout =>
         observer.observe(t)
-      case t: serializers.thrift.YourId =>
+      case t: thrift.message.YourId =>
         observer.observe(t)
         waitingId.get().foreach(_ ! StringIdentity(t.id))
         waitingId send { None }
-      case t: serializers.thrift.Position =>
+      case t: thrift.message.Position =>
         observer.observe(t)
         waitingPosition.get().foreach(_ ! Position(t.x.toFloat, t.z.toFloat))
         waitingPosition send { None }
-      case t: serializers.thrift.Things =>
+      case t: thrift.message.Things =>
         observer.observe(t)
         waitingThings.get().foreach(_ ! t)
         waitingThings send { None }
@@ -101,7 +102,7 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver) exten
         Some(sender)
       }
       sock.foreach { s =>
-        val m = new serializers.thrift.FindAllThings()
+        val m = new thrift.message.FindAllThings()
         self ! Send(m)
       }
     case GetPosition(id) =>
@@ -109,7 +110,7 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver) exten
         Some(sender)
       }
       sock.foreach { s =>
-        val m = new serializers.thrift.GetPosition(id.str)
+        val m = new thrift.message.GetPosition(id.str)
         self ! Send(m)
       }
     case AskForMyId =>
@@ -119,7 +120,7 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver) exten
         Some(sender)
       }
       sock.foreach { s =>
-        val m = new serializers.thrift.MyId()
+        val m = new thrift.message.MyId()
         self ! Send(m)
       }
   }

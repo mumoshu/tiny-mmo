@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,40 +12,33 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Left");
+public class Shout implements org.apache.thrift.TBase<Shout, Shout._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Shout");
 
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField TEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("text", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new LeftStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new LeftTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new ShoutStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new ShoutTupleSchemeFactory());
   }
 
   public String id; // required
+  public String text; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ID((short)1, "id");
+    ID((short)1, "id"),
+    TEXT((short)2, "text");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +55,8 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
       switch(fieldId) {
         case 1: // ID
           return ID;
+        case 2: // TEXT
+          return TEXT;
         default:
           return null;
       }
@@ -107,43 +102,51 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.TEXT, new org.apache.thrift.meta_data.FieldMetaData("text", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Left.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Shout.class, metaDataMap);
   }
 
-  public Left() {
+  public Shout() {
   }
 
-  public Left(
-    String id)
+  public Shout(
+    String id,
+    String text)
   {
     this();
     this.id = id;
+    this.text = text;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Left(Left other) {
+  public Shout(Shout other) {
     if (other.isSetId()) {
       this.id = other.id;
     }
+    if (other.isSetText()) {
+      this.text = other.text;
+    }
   }
 
-  public Left deepCopy() {
-    return new Left(this);
+  public Shout deepCopy() {
+    return new Shout(this);
   }
 
   @Override
   public void clear() {
     this.id = null;
+    this.text = null;
   }
 
   public String getId() {
     return this.id;
   }
 
-  public Left setId(String id) {
+  public Shout setId(String id) {
     this.id = id;
     return this;
   }
@@ -163,6 +166,30 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     }
   }
 
+  public String getText() {
+    return this.text;
+  }
+
+  public Shout setText(String text) {
+    this.text = text;
+    return this;
+  }
+
+  public void unsetText() {
+    this.text = null;
+  }
+
+  /** Returns true if field text is set (has been assigned a value) and false otherwise */
+  public boolean isSetText() {
+    return this.text != null;
+  }
+
+  public void setTextIsSet(boolean value) {
+    if (!value) {
+      this.text = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ID:
@@ -173,6 +200,14 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
       }
       break;
 
+    case TEXT:
+      if (value == null) {
+        unsetText();
+      } else {
+        setText((String)value);
+      }
+      break;
+
     }
   }
 
@@ -180,6 +215,9 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     switch (field) {
     case ID:
       return getId();
+
+    case TEXT:
+      return getText();
 
     }
     throw new IllegalStateException();
@@ -194,6 +232,8 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     switch (field) {
     case ID:
       return isSetId();
+    case TEXT:
+      return isSetText();
     }
     throw new IllegalStateException();
   }
@@ -202,12 +242,12 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Left)
-      return this.equals((Left)that);
+    if (that instanceof Shout)
+      return this.equals((Shout)that);
     return false;
   }
 
-  public boolean equals(Left that) {
+  public boolean equals(Shout that) {
     if (that == null)
       return false;
 
@@ -220,6 +260,15 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
         return false;
     }
 
+    boolean this_present_text = true && this.isSetText();
+    boolean that_present_text = true && that.isSetText();
+    if (this_present_text || that_present_text) {
+      if (!(this_present_text && that_present_text))
+        return false;
+      if (!this.text.equals(that.text))
+        return false;
+    }
+
     return true;
   }
 
@@ -228,13 +277,13 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     return 0;
   }
 
-  public int compareTo(Left other) {
+  public int compareTo(Shout other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Left typedOther = (Left)other;
+    Shout typedOther = (Shout)other;
 
     lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
@@ -242,6 +291,16 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     }
     if (isSetId()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, typedOther.id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetText()).compareTo(typedOther.isSetText());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetText()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.text, typedOther.text);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -263,7 +322,7 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Left(");
+    StringBuilder sb = new StringBuilder("Shout(");
     boolean first = true;
 
     sb.append("id:");
@@ -271,6 +330,14 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
       sb.append("null");
     } else {
       sb.append(this.id);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("text:");
+    if (this.text == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.text);
     }
     first = false;
     sb.append(")");
@@ -298,15 +365,15 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
     }
   }
 
-  private static class LeftStandardSchemeFactory implements SchemeFactory {
-    public LeftStandardScheme getScheme() {
-      return new LeftStandardScheme();
+  private static class ShoutStandardSchemeFactory implements SchemeFactory {
+    public ShoutStandardScheme getScheme() {
+      return new ShoutStandardScheme();
     }
   }
 
-  private static class LeftStandardScheme extends StandardScheme<Left> {
+  private static class ShoutStandardScheme extends StandardScheme<Shout> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Left struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Shout struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -324,6 +391,14 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 2: // TEXT
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.text = iprot.readString();
+              struct.setTextIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -335,7 +410,7 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Left struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Shout struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -344,40 +419,55 @@ public class Left implements org.apache.thrift.TBase<Left, Left._Fields>, java.i
         oprot.writeString(struct.id);
         oprot.writeFieldEnd();
       }
+      if (struct.text != null) {
+        oprot.writeFieldBegin(TEXT_FIELD_DESC);
+        oprot.writeString(struct.text);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class LeftTupleSchemeFactory implements SchemeFactory {
-    public LeftTupleScheme getScheme() {
-      return new LeftTupleScheme();
+  private static class ShoutTupleSchemeFactory implements SchemeFactory {
+    public ShoutTupleScheme getScheme() {
+      return new ShoutTupleScheme();
     }
   }
 
-  private static class LeftTupleScheme extends TupleScheme<Left> {
+  private static class ShoutTupleScheme extends TupleScheme<Shout> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Left struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Shout struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetId()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetText()) {
+        optionals.set(1);
+      }
+      oprot.writeBitSet(optionals, 2);
       if (struct.isSetId()) {
         oprot.writeString(struct.id);
+      }
+      if (struct.isSetText()) {
+        oprot.writeString(struct.text);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Left struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Shout struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
         struct.id = iprot.readString();
         struct.setIdIsSet(true);
+      }
+      if (incoming.get(1)) {
+        struct.text = iprot.readString();
+        struct.setTextIsSet(true);
       }
     }
   }

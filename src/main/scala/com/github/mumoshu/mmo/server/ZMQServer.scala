@@ -7,6 +7,7 @@ import org.apache.thrift.protocol.TBinaryProtocol
 import com.typesafe.config.ConfigFactory
 import com.github.mumoshu.mmo.models.{MongoBackedWorld, Id}
 import com.github.mumoshu.mmo.protocol.Protocol
+import com.github.mumoshu.mmo.thrift
 import akka.zeromq.Connect
 import akka.zeromq.Listener
 import akka.zeromq.Bind
@@ -143,7 +144,7 @@ object ZMQServer {
         val emptyFrame = m.frames(1)
         val id = Id.fromByteArray(identity.payload.toArray)
         deserialize(frames) match {
-          case m: serializers.thrift.Join =>
+          case m: thrift.message.Join =>
             val p = MongoBackedWorld.join(
               nickname = m.name,
               id = id.toString
@@ -153,23 +154,23 @@ object ZMQServer {
             // Notify all currently connected clients that the new client has joined
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val frames = serialize(new serializers.thrift.Joined(id.toString))
+              val frames = serialize(new thrift.message.Joined(id.toString))
               val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }
-          case m: serializers.thrift.Move =>
+          case m: thrift.message.Move =>
             MongoBackedWorld.tryMove(id = id.toString, x = m.x)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val frames = serialize(new serializers.thrift.Moved(id.toString, m.x))
+              val frames = serialize(new thrift.message.Moved(id.toString, m.x))
               val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }
-          case m: serializers.thrift.Leave =>
+          case m: thrift.message.Leave =>
             MongoBackedWorld.leave(id = id.toString)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
               val recipient = Frame(Id.fromString(p.id).toByteArray)
-              val frames = serialize(new serializers.thrift.Left(id.toString))
+              val frames = serialize(new thrift.message.Left(id.toString))
               val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
               worker ! mm
             }

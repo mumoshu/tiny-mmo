@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,43 +12,37 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Respawned");
+public class Appear implements org.apache.thrift.TBase<Appear, Appear._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Appear");
 
   private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
+  private static final org.apache.thrift.protocol.TField Z_FIELD_DESC = new org.apache.thrift.protocol.TField("z", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new RespawnedStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new RespawnedTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new AppearStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new AppearTupleSchemeFactory());
   }
 
   public String id; // required
   public double x; // required
+  public double z; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ID((short)1, "id"),
-    X((short)2, "x");
+    X((short)2, "x"),
+    Z((short)3, "z");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -67,6 +61,8 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
           return ID;
         case 2: // X
           return X;
+        case 3: // Z
+          return Z;
         default:
           return null;
       }
@@ -108,6 +104,7 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
 
   // isset id assignments
   private static final int __X_ISSET_ID = 0;
+  private static final int __Z_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -116,36 +113,42 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.Z, new org.apache.thrift.meta_data.FieldMetaData("z", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Respawned.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Appear.class, metaDataMap);
   }
 
-  public Respawned() {
+  public Appear() {
   }
 
-  public Respawned(
+  public Appear(
     String id,
-    double x)
+    double x,
+    double z)
   {
     this();
     this.id = id;
     this.x = x;
     setXIsSet(true);
+    this.z = z;
+    setZIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Respawned(Respawned other) {
+  public Appear(Appear other) {
     __isset_bitfield = other.__isset_bitfield;
     if (other.isSetId()) {
       this.id = other.id;
     }
     this.x = other.x;
+    this.z = other.z;
   }
 
-  public Respawned deepCopy() {
-    return new Respawned(this);
+  public Appear deepCopy() {
+    return new Appear(this);
   }
 
   @Override
@@ -153,13 +156,15 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
     this.id = null;
     setXIsSet(false);
     this.x = 0.0;
+    setZIsSet(false);
+    this.z = 0.0;
   }
 
   public String getId() {
     return this.id;
   }
 
-  public Respawned setId(String id) {
+  public Appear setId(String id) {
     this.id = id;
     return this;
   }
@@ -183,7 +188,7 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
     return this.x;
   }
 
-  public Respawned setX(double x) {
+  public Appear setX(double x) {
     this.x = x;
     setXIsSet(true);
     return this;
@@ -200,6 +205,29 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
 
   public void setXIsSet(boolean value) {
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __X_ISSET_ID, value);
+  }
+
+  public double getZ() {
+    return this.z;
+  }
+
+  public Appear setZ(double z) {
+    this.z = z;
+    setZIsSet(true);
+    return this;
+  }
+
+  public void unsetZ() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __Z_ISSET_ID);
+  }
+
+  /** Returns true if field z is set (has been assigned a value) and false otherwise */
+  public boolean isSetZ() {
+    return EncodingUtils.testBit(__isset_bitfield, __Z_ISSET_ID);
+  }
+
+  public void setZIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __Z_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -220,6 +248,14 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       }
       break;
 
+    case Z:
+      if (value == null) {
+        unsetZ();
+      } else {
+        setZ((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -230,6 +266,9 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
 
     case X:
       return Double.valueOf(getX());
+
+    case Z:
+      return Double.valueOf(getZ());
 
     }
     throw new IllegalStateException();
@@ -246,6 +285,8 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       return isSetId();
     case X:
       return isSetX();
+    case Z:
+      return isSetZ();
     }
     throw new IllegalStateException();
   }
@@ -254,12 +295,12 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Respawned)
-      return this.equals((Respawned)that);
+    if (that instanceof Appear)
+      return this.equals((Appear)that);
     return false;
   }
 
-  public boolean equals(Respawned that) {
+  public boolean equals(Appear that) {
     if (that == null)
       return false;
 
@@ -281,6 +322,15 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
         return false;
     }
 
+    boolean this_present_z = true;
+    boolean that_present_z = true;
+    if (this_present_z || that_present_z) {
+      if (!(this_present_z && that_present_z))
+        return false;
+      if (this.z != that.z)
+        return false;
+    }
+
     return true;
   }
 
@@ -289,13 +339,13 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
     return 0;
   }
 
-  public int compareTo(Respawned other) {
+  public int compareTo(Appear other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Respawned typedOther = (Respawned)other;
+    Appear typedOther = (Appear)other;
 
     lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
@@ -317,6 +367,16 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetZ()).compareTo(typedOther.isSetZ());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetZ()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.z, typedOther.z);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -334,7 +394,7 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Respawned(");
+    StringBuilder sb = new StringBuilder("Appear(");
     boolean first = true;
 
     sb.append("id:");
@@ -347,6 +407,10 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
     if (!first) sb.append(", ");
     sb.append("x:");
     sb.append(this.x);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("z:");
+    sb.append(this.z);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -375,15 +439,15 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
     }
   }
 
-  private static class RespawnedStandardSchemeFactory implements SchemeFactory {
-    public RespawnedStandardScheme getScheme() {
-      return new RespawnedStandardScheme();
+  private static class AppearStandardSchemeFactory implements SchemeFactory {
+    public AppearStandardScheme getScheme() {
+      return new AppearStandardScheme();
     }
   }
 
-  private static class RespawnedStandardScheme extends StandardScheme<Respawned> {
+  private static class AppearStandardScheme extends StandardScheme<Appear> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Respawned struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Appear struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -409,6 +473,14 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 3: // Z
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.z = iprot.readDouble();
+              struct.setZIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -420,7 +492,7 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Respawned struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Appear struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -432,22 +504,25 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       oprot.writeFieldBegin(X_FIELD_DESC);
       oprot.writeDouble(struct.x);
       oprot.writeFieldEnd();
+      oprot.writeFieldBegin(Z_FIELD_DESC);
+      oprot.writeDouble(struct.z);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class RespawnedTupleSchemeFactory implements SchemeFactory {
-    public RespawnedTupleScheme getScheme() {
-      return new RespawnedTupleScheme();
+  private static class AppearTupleSchemeFactory implements SchemeFactory {
+    public AppearTupleScheme getScheme() {
+      return new AppearTupleScheme();
     }
   }
 
-  private static class RespawnedTupleScheme extends TupleScheme<Respawned> {
+  private static class AppearTupleScheme extends TupleScheme<Appear> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Respawned struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Appear struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetId()) {
@@ -456,19 +531,25 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       if (struct.isSetX()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetZ()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetId()) {
         oprot.writeString(struct.id);
       }
       if (struct.isSetX()) {
         oprot.writeDouble(struct.x);
       }
+      if (struct.isSetZ()) {
+        oprot.writeDouble(struct.z);
+      }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Respawned struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Appear struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.id = iprot.readString();
         struct.setIdIsSet(true);
@@ -476,6 +557,10 @@ public class Respawned implements org.apache.thrift.TBase<Respawned, Respawned._
       if (incoming.get(1)) {
         struct.x = iprot.readDouble();
         struct.setXIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.z = iprot.readDouble();
+        struct.setZIsSet(true);
       }
     }
   }

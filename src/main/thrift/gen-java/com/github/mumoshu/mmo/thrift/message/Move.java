@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,40 +12,31 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Things");
+public class Move implements org.apache.thrift.TBase<Move, Move._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Move");
 
-  private static final org.apache.thrift.protocol.TField TS_FIELD_DESC = new org.apache.thrift.protocol.TField("ts", org.apache.thrift.protocol.TType.LIST, (short)1);
+  private static final org.apache.thrift.protocol.TField X_FIELD_DESC = new org.apache.thrift.protocol.TField("x", org.apache.thrift.protocol.TType.DOUBLE, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new ThingsStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new ThingsTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new MoveStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new MoveTupleSchemeFactory());
   }
 
-  public List<Thing> ts; // required
+  public double x; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    TS((short)1, "ts");
+    X((short)1, "x");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +51,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // TS
-          return TS;
+        case 1: // X
+          return X;
         default:
           return null;
       }
@@ -102,94 +93,76 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
   }
 
   // isset id assignments
+  private static final int __X_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.TS, new org.apache.thrift.meta_data.FieldMetaData("ts", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Thing.class))));
+    tmpMap.put(_Fields.X, new org.apache.thrift.meta_data.FieldMetaData("x", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Things.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Move.class, metaDataMap);
   }
 
-  public Things() {
+  public Move() {
   }
 
-  public Things(
-    List<Thing> ts)
+  public Move(
+    double x)
   {
     this();
-    this.ts = ts;
+    this.x = x;
+    setXIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Things(Things other) {
-    if (other.isSetTs()) {
-      List<Thing> __this__ts = new ArrayList<Thing>();
-      for (Thing other_element : other.ts) {
-        __this__ts.add(new Thing(other_element));
-      }
-      this.ts = __this__ts;
-    }
+  public Move(Move other) {
+    __isset_bitfield = other.__isset_bitfield;
+    this.x = other.x;
   }
 
-  public Things deepCopy() {
-    return new Things(this);
+  public Move deepCopy() {
+    return new Move(this);
   }
 
   @Override
   public void clear() {
-    this.ts = null;
+    setXIsSet(false);
+    this.x = 0.0;
   }
 
-  public int getTsSize() {
-    return (this.ts == null) ? 0 : this.ts.size();
+  public double getX() {
+    return this.x;
   }
 
-  public java.util.Iterator<Thing> getTsIterator() {
-    return (this.ts == null) ? null : this.ts.iterator();
-  }
-
-  public void addToTs(Thing elem) {
-    if (this.ts == null) {
-      this.ts = new ArrayList<Thing>();
-    }
-    this.ts.add(elem);
-  }
-
-  public List<Thing> getTs() {
-    return this.ts;
-  }
-
-  public Things setTs(List<Thing> ts) {
-    this.ts = ts;
+  public Move setX(double x) {
+    this.x = x;
+    setXIsSet(true);
     return this;
   }
 
-  public void unsetTs() {
-    this.ts = null;
+  public void unsetX() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __X_ISSET_ID);
   }
 
-  /** Returns true if field ts is set (has been assigned a value) and false otherwise */
-  public boolean isSetTs() {
-    return this.ts != null;
+  /** Returns true if field x is set (has been assigned a value) and false otherwise */
+  public boolean isSetX() {
+    return EncodingUtils.testBit(__isset_bitfield, __X_ISSET_ID);
   }
 
-  public void setTsIsSet(boolean value) {
-    if (!value) {
-      this.ts = null;
-    }
+  public void setXIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __X_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case TS:
+    case X:
       if (value == null) {
-        unsetTs();
+        unsetX();
       } else {
-        setTs((List<Thing>)value);
+        setX((Double)value);
       }
       break;
 
@@ -198,8 +171,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case TS:
-      return getTs();
+    case X:
+      return Double.valueOf(getX());
 
     }
     throw new IllegalStateException();
@@ -212,8 +185,8 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     }
 
     switch (field) {
-    case TS:
-      return isSetTs();
+    case X:
+      return isSetX();
     }
     throw new IllegalStateException();
   }
@@ -222,21 +195,21 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Things)
-      return this.equals((Things)that);
+    if (that instanceof Move)
+      return this.equals((Move)that);
     return false;
   }
 
-  public boolean equals(Things that) {
+  public boolean equals(Move that) {
     if (that == null)
       return false;
 
-    boolean this_present_ts = true && this.isSetTs();
-    boolean that_present_ts = true && that.isSetTs();
-    if (this_present_ts || that_present_ts) {
-      if (!(this_present_ts && that_present_ts))
+    boolean this_present_x = true;
+    boolean that_present_x = true;
+    if (this_present_x || that_present_x) {
+      if (!(this_present_x && that_present_x))
         return false;
-      if (!this.ts.equals(that.ts))
+      if (this.x != that.x)
         return false;
     }
 
@@ -248,20 +221,20 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
     return 0;
   }
 
-  public int compareTo(Things other) {
+  public int compareTo(Move other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Things typedOther = (Things)other;
+    Move typedOther = (Move)other;
 
-    lastComparison = Boolean.valueOf(isSetTs()).compareTo(typedOther.isSetTs());
+    lastComparison = Boolean.valueOf(isSetX()).compareTo(typedOther.isSetX());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetTs()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ts, typedOther.ts);
+    if (isSetX()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.x, typedOther.x);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -283,15 +256,11 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Things(");
+    StringBuilder sb = new StringBuilder("Move(");
     boolean first = true;
 
-    sb.append("ts:");
-    if (this.ts == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.ts);
-    }
+    sb.append("x:");
+    sb.append(this.x);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -312,21 +281,23 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
     }
   }
 
-  private static class ThingsStandardSchemeFactory implements SchemeFactory {
-    public ThingsStandardScheme getScheme() {
-      return new ThingsStandardScheme();
+  private static class MoveStandardSchemeFactory implements SchemeFactory {
+    public MoveStandardScheme getScheme() {
+      return new MoveStandardScheme();
     }
   }
 
-  private static class ThingsStandardScheme extends StandardScheme<Things> {
+  private static class MoveStandardScheme extends StandardScheme<Move> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Things struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Move struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -336,21 +307,10 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
           break;
         }
         switch (schemeField.id) {
-          case 1: // TS
-            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                struct.ts = new ArrayList<Thing>(_list0.size);
-                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
-                {
-                  Thing _elem2; // required
-                  _elem2 = new Thing();
-                  _elem2.read(iprot);
-                  struct.ts.add(_elem2);
-                }
-                iprot.readListEnd();
-              }
-              struct.setTsIsSet(true);
+          case 1: // X
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.x = iprot.readDouble();
+              struct.setXIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -366,72 +326,47 @@ public class Things implements org.apache.thrift.TBase<Things, Things._Fields>, 
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Things struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Move struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.ts != null) {
-        oprot.writeFieldBegin(TS_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.ts.size()));
-          for (Thing _iter3 : struct.ts)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(X_FIELD_DESC);
+      oprot.writeDouble(struct.x);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class ThingsTupleSchemeFactory implements SchemeFactory {
-    public ThingsTupleScheme getScheme() {
-      return new ThingsTupleScheme();
+  private static class MoveTupleSchemeFactory implements SchemeFactory {
+    public MoveTupleScheme getScheme() {
+      return new MoveTupleScheme();
     }
   }
 
-  private static class ThingsTupleScheme extends TupleScheme<Things> {
+  private static class MoveTupleScheme extends TupleScheme<Move> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Things struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Move struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetTs()) {
+      if (struct.isSetX()) {
         optionals.set(0);
       }
       oprot.writeBitSet(optionals, 1);
-      if (struct.isSetTs()) {
-        {
-          oprot.writeI32(struct.ts.size());
-          for (Thing _iter4 : struct.ts)
-          {
-            _iter4.write(oprot);
-          }
-        }
+      if (struct.isSetX()) {
+        oprot.writeDouble(struct.x);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Things struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Move struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
-        {
-          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.ts = new ArrayList<Thing>(_list5.size);
-          for (int _i6 = 0; _i6 < _list5.size; ++_i6)
-          {
-            Thing _elem7; // required
-            _elem7 = new Thing();
-            _elem7.read(iprot);
-            struct.ts.add(_elem7);
-          }
-        }
-        struct.setTsIsSet(true);
+        struct.x = iprot.readDouble();
+        struct.setXIsSet(true);
       }
     }
   }

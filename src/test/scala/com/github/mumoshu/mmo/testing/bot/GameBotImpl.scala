@@ -5,6 +5,7 @@ import akka.actor.{Props, TypedActor, ActorSystem}
 import akka.util
 import com.github.mumoshu.mmo.server.TCPIPServer
 import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Identity, Position}
+import com.github.mumoshu.mmo.thrift
 import concurrent.duration.Duration
 import concurrent.Await
 import com.github.mumoshu.mmo.testing.{GameClient, RecordingGameClientObserver, GameClientObserver}
@@ -23,35 +24,35 @@ case class GameBotImpl(serverAddress: InetSocketAddress, playerName: String = "m
   import TCPIPServer.protocol._
 
   def appear(p: Position) {
-    client ! Send(new serializers.thrift.Appear(selfId.get.str, p.x.toDouble, p.z.toDouble))
+    client ! Send(new thrift.message.Appear(selfId.get.str, p.x.toDouble, p.z.toDouble))
   }
 
   def disappear() {
-    client ! Send(new serializers.thrift.Disappear(selfId.get.str))
+    client ! Send(new thrift.message.Disappear(selfId.get.str))
   }
 
   def join() {
-    client ! Send(new serializers.thrift.Join(playerName))
+    client ! Send(new thrift.message.Join(playerName))
   }
 
   def moveTo(p: Position) {
-    client ! Send(new serializers.thrift.MoveTo(selfId.get.str, p.x, p.z))
+    client ! Send(new thrift.message.MoveTo(selfId.get.str, p.x, p.z))
   }
 
   def leave() {
-    client ! Send(new serializers.thrift.Leave())
+    client ! Send(new thrift.message.Leave())
   }
 
   def attack(id: Identity) {
-    client ! Send(new serializers.thrift.Attack(selfId.get.str, id.str))
+    client ! Send(new thrift.message.Attack(selfId.get.str, id.str))
   }
 
   def say(what: String) {
-    client ! Send(new serializers.thrift.Say(selfId.get.str, what))
+    client ! Send(new thrift.message.Say(selfId.get.str, what))
   }
 
   def shout(what: String) {
-    client ! Send(new serializers.thrift.Say(selfId.get.str, what))
+    client ! Send(new thrift.message.Say(selfId.get.str, what))
   }
 
   val duration = Duration("3 seconds")
@@ -62,7 +63,7 @@ case class GameBotImpl(serverAddress: InetSocketAddress, playerName: String = "m
   def nearby: Option[List[Identity]] = Some(
     Await.result(
       (client ? FindAllThings)
-        .mapTo[serializers.thrift.Things]
+        .mapTo[thrift.message.Things]
         .map(_.ts.asScala.toList.map(_.id).map(StringIdentity)),
       duration)
   )

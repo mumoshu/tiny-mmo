@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package serializers.thrift;
+package com.github.mumoshu.mmo.thrift.message;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -12,32 +12,21 @@ import org.apache.thrift.scheme.StandardScheme;
 
 import org.apache.thrift.scheme.TupleScheme;
 import org.apache.thrift.protocol.TTupleProtocol;
-import org.apache.thrift.protocol.TProtocolException;
-import org.apache.thrift.EncodingUtils;
-import org.apache.thrift.TException;
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
-import java.util.BitSet;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Start");
+public class Leave implements org.apache.thrift.TBase<Leave, Leave._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Leave");
 
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new StartStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new StartTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new LeaveStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new LeaveTupleSchemeFactory());
   }
 
 
@@ -100,20 +89,20 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Start.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Leave.class, metaDataMap);
   }
 
-  public Start() {
+  public Leave() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Start(Start other) {
+  public Leave(Leave other) {
   }
 
-  public Start deepCopy() {
-    return new Start(this);
+  public Leave deepCopy() {
+    return new Leave(this);
   }
 
   @Override
@@ -146,12 +135,12 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Start)
-      return this.equals((Start)that);
+    if (that instanceof Leave)
+      return this.equals((Leave)that);
     return false;
   }
 
-  public boolean equals(Start that) {
+  public boolean equals(Leave that) {
     if (that == null)
       return false;
 
@@ -163,13 +152,13 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
     return 0;
   }
 
-  public int compareTo(Start other) {
+  public int compareTo(Leave other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Start typedOther = (Start)other;
+    Leave typedOther = (Leave)other;
 
     return 0;
   }
@@ -188,7 +177,7 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Start(");
+    StringBuilder sb = new StringBuilder("Leave(");
     boolean first = true;
 
     sb.append(")");
@@ -216,15 +205,15 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
     }
   }
 
-  private static class StartStandardSchemeFactory implements SchemeFactory {
-    public StartStandardScheme getScheme() {
-      return new StartStandardScheme();
+  private static class LeaveStandardSchemeFactory implements SchemeFactory {
+    public LeaveStandardScheme getScheme() {
+      return new LeaveStandardScheme();
     }
   }
 
-  private static class StartStandardScheme extends StandardScheme<Start> {
+  private static class LeaveStandardScheme extends StandardScheme<Leave> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Start struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, Leave struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -245,7 +234,7 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Start struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, Leave struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -255,21 +244,21 @@ public class Start implements org.apache.thrift.TBase<Start, Start._Fields>, jav
 
   }
 
-  private static class StartTupleSchemeFactory implements SchemeFactory {
-    public StartTupleScheme getScheme() {
-      return new StartTupleScheme();
+  private static class LeaveTupleSchemeFactory implements SchemeFactory {
+    public LeaveTupleScheme getScheme() {
+      return new LeaveTupleScheme();
     }
   }
 
-  private static class StartTupleScheme extends TupleScheme<Start> {
+  private static class LeaveTupleScheme extends TupleScheme<Leave> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Start struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, Leave struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Start struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, Leave struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
     }
   }

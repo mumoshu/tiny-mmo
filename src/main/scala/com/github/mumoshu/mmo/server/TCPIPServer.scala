@@ -11,9 +11,8 @@ import tcpip.{DefaultByteStringWriter, PositionedClient, RangedPublisher}
 import scala.concurrent.stm._
 import akka.agent.Agent
 import java.util
-import serializers.thrift
+import com.github.mumoshu.mmo.thrift
 import org.slf4j.LoggerFactory
-import thrift.YourId
 
 /**
  * See http://stackoverflow.com/questions/12959709/send-a-tcp-ip-message-akka-actor
@@ -109,14 +108,14 @@ class TCPIPServer {
       atomic { txn =>
         log.debug("Beginning a transaction")
         deserialized match {
-          case m: serializers.thrift.Join =>
+          case m: thrift.message.Join =>
             world send {
               _.join(new LivingPlayer(id, 10f, Position(0f, 0f)))
             }
             publisher send {
               _.accept(PositionedClient(handle.asSocket, Position(0f, 0f))).publish(m)
             }
-          case m: serializers.thrift.Leave =>
+          case m: thrift.message.Leave =>
             world.send {
               _.leave(new LivingPlayer(id, 0f, Position(0f, 0f)))
             }
@@ -126,48 +125,48 @@ class TCPIPServer {
                 res.remove(c)
               }.publish(m)
             }
-          case m: serializers.thrift.MoveTo =>
+          case m: thrift.message.MoveTo =>
             // TODO you only need id
             world.send {
               _.tryMoveTo(new LivingPlayer(id, 10f, Position(0f, 0f)), Position(m.x.toFloat, m.z.toFloat))._1
             }
             publish(m)
-          case m: serializers.thrift.Attack =>
+          case m: thrift.message.Attack =>
             // TODO attack if the thing identified by id can be an attacker
             world.send {
               _.tryAttack(id, StringIdentity(m.targetId))._1
             }
             publish(m)
-          case m: serializers.thrift.Say =>
+          case m: thrift.message.Say =>
             world.send {
               _.trySay(id, m.text)
             }
             publish(m)
-          case m: serializers.thrift.Shout =>
+          case m: thrift.message.Shout =>
             world.send {
               _.tryShout(id, m.text)
             }
             publish(m)
-          case m: serializers.thrift.MyId =>
-            val m: YourId = new serializers.thrift.YourId(id.str)
+          case m: thrift.message.MyId =>
+            val m: thrift.message.YourId = new thrift.message.YourId(id.str)
             val data = protocol.serialize(m)
             handle.asWritable.write(FrameEncoder(data))
             log.debug("Wrote: " + m)
-          case m: serializers.thrift.GetPosition =>
+          case m: thrift.message.GetPosition =>
             val targetId = StringIdentity(m.id)
             val p = world.get().things.find(_.id == targetId).get.position
-            val rep: thrift.Position = new serializers.thrift.Position(targetId.str, p.x.toFloat, p.z.toFloat)
+            val rep: thrift.message.Position = new thrift.message.Position(targetId.str, p.x.toFloat, p.z.toFloat)
             val data = protocol.serialize(rep)
             handle.asWritable.write(FrameEncoder(data))
             log.debug("Wrote: " + rep)
-          case m: serializers.thrift.FindAllThings =>
-            val things = new serializers.thrift.Things()
-            things.ts = new java.util.ArrayList[serializers.thrift.Thing]()
+          case m: thrift.message.FindAllThings =>
+            val things = new thrift.message.Things()
+            things.ts = new java.util.ArrayList[thrift.message.Thing]()
             world.get().things.foreach { t =>
             // Things other than the client are included
               if (t.id != id) {
-                val p = new serializers.thrift.Position(t.id.str, t.position.x.toDouble, t.position.z.toDouble)
-                things.ts.add(new serializers.thrift.Thing(t.id.str, p))
+                val p = new thrift.message.Position(t.id.str, t.position.x.toDouble, t.position.z.toDouble)
+                things.ts.add(new thrift.message.Thing(t.id.str, p))
               }
             }
             val data = protocol.serialize(things)

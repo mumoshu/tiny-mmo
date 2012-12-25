@@ -13,6 +13,7 @@ import com.github.mumoshu.mmo.testing._
 import bot.{GameBotImpl, GameBot}
 import com.github.mumoshu.mmo.models.world.world.Position
 import com.github.mumoshu.mmo.testing.RecordingGameClientObserver
+import com.github.mumoshu.mmo.thrift
 
 object Tester {
 
@@ -23,7 +24,7 @@ object Tester {
     val client = system.actorOf(Props[GameClient])
     Thread.sleep(1100)
     implicit val timeout = Timeout(5 seconds)
-    val bytes = TCPIPServer.protocol.serialize(new serializers.thrift.Join("mumoshu"))
+    val bytes = TCPIPServer.protocol.serialize(new thrift.message.Join("mumoshu"))
     var r: Option[Boolean] = None
     try {
       val result = Await.result((client ? bytes.asInstanceOf[ByteString]).mapTo[Boolean], timeout.duration)
