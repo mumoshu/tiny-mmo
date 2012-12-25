@@ -1,9 +1,9 @@
-package org.example.server.tcpip
+package com.github.mumoshu.mmo.server.tcpip
 
 import akka.actor.IO
-import org.example.models.world.world.Position
+import com.github.mumoshu.mmo.models.world.world.Position
 import org.slf4j.LoggerFactory
-import org.example.server.TCPIPServer.FrameEncoder
+import com.github.mumoshu.mmo.server.TCPIPServer.FrameEncoder
 
 case class PositionedClient(handle: IO.SocketHandle, position: Position, received: List[Any] = List.empty, observer: PositionedClientObserver = NullPositionedClientObserver) {
   

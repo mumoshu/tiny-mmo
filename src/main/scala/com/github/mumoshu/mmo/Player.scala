@@ -1,4 +1,4 @@
-package org.example
+package org.mmo
 
 import akka.actor._
 

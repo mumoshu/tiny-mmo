@@ -1,4 +1,4 @@
-package org.example.models
+package com.github.mumoshu.mmo.models
 
 case class Tile(number: Int)
 

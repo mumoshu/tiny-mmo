@@ -1,4 +1,4 @@
-package org.example.protocol
+package com.github.mumoshu.mmo.protocol
 
 import akka.zeromq.{Frame, ZMQMessage}
 import org.apache.thrift.transport.TIOStreamTransport
@@ -32,7 +32,7 @@ trait Protocol {
 
   val codec: Codec[Payload]
 
-  // org.example.ZMQServer.deserialize(akka.zeromq.ZMQMessage(Seq(akka.zeromq.Frame(Seq(1:Byte)), akka.zeromq.Frame(Seq.empty[Byte]), akka.zeromq.Frame(Seq(0:Byte)), akka.zeromq.Frame(Seq(11,0,1,0,0,0,4,104,111,103,101,0).map(_.toByte)))))
+  // com.github.mumoshu.mmo.ZMQServer.deserialize(akka.zeromq.ZMQMessage(Seq(akka.zeromq.Frame(Seq(1:Byte)), akka.zeromq.Frame(Seq.empty[Byte]), akka.zeromq.Frame(Seq(0:Byte)), akka.zeromq.Frame(Seq(11,0,1,0,0,0,4,104,111,103,101,0).map(_.toByte)))))
   def deserialize(m: Payload): AnyRef = {
     m match {
       case codec(hint, bytes) =>
@@ -136,7 +136,7 @@ trait Protocol {
 
   }
 
-  // org.example.ZMQServer.serialize(org.example.ZMQServer.Message(akka.zeromq.Frame(Seq(1:Byte)), new serializers.thrift.Join("hoge")))
+  // com.github.mumoshu.mmo.ZMQServer.serialize(com.github.mumoshu.mmo.ZMQServer.Message(akka.zeromq.Frame(Seq(1:Byte)), new serializers.thrift.Join("hoge")))
   def serialize(m: AnyRef): Payload = {
     val baos = new java.io.ByteArrayOutputStream()
     val transport = new TIOStreamTransport(baos)

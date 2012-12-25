@@ -1,12 +1,12 @@
-package org.example.server
+package com.github.mumoshu.mmo.server
 
 import akka.actor._
 import akka.zeromq._
 import org.apache.thrift.transport.TIOStreamTransport
 import org.apache.thrift.protocol.TBinaryProtocol
 import com.typesafe.config.ConfigFactory
-import org.example.models.{MongoBackedWorld, Id}
-import org.example.protocol.Protocol
+import com.github.mumoshu.mmo.models.{MongoBackedWorld, Id}
+import com.github.mumoshu.mmo.protocol.Protocol
 import akka.zeromq.Connect
 import akka.zeromq.Listener
 import akka.zeromq.Bind

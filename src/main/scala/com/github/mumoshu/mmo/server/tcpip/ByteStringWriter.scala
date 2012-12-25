@@ -1,4 +1,4 @@
-package org.example.server.tcpip
+package com.github.mumoshu.mmo.server.tcpip
 
 import akka.util.ByteString
 

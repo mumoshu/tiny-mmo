@@ -1,7 +1,7 @@
-package org.example.server.tcpip
+package com.github.mumoshu.mmo.server.tcpip
 
 import akka.util.ByteString
-import org.example.server.TCPIPServer
+import com.github.mumoshu.mmo.server.TCPIPServer
 
 object DefaultByteStringWriter extends ByteStringWriter {
   val protocol = TCPIPServer.protocol

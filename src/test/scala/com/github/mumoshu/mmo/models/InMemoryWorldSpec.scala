@@ -1,4 +1,4 @@
-package org.example.models
+package com.github.mumoshu.mmo.models
 
 import org.specs2.mutable._
 import world.world._

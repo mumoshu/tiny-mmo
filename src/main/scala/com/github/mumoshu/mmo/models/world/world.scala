@@ -1,6 +1,6 @@
-package org.example.models.world.world
+package com.github.mumoshu.mmo.models.world.world
 
-import org.example.models.Terrain
+import com.github.mumoshu.mmo.models.Terrain
 
 sealed trait Identity {
   /**

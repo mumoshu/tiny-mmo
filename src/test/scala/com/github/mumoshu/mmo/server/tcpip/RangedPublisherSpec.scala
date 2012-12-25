@@ -1,10 +1,10 @@
-package org.example.server.tcpip
+package com.github.mumoshu.mmo.server.tcpip
 
 import org.specs2.mutable._
 import akka.actor.IO
 import org.specs2.mock.Mockito
 import akka.util.ByteString
-import org.example.models.world.world.Position
+import com.github.mumoshu.mmo.models.world.world.Position
 
 object RangedPublisherSpec extends Specification with Mockito {
 

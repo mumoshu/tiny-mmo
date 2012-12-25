@@ -1,12 +1,12 @@
-package org.example.server
+package com.github.mumoshu.mmo.server
 
 import akka.actor._
 import ActorDSL._
 import java.net.InetSocketAddress
-import org.example.protocol.Protocol
+import com.github.mumoshu.mmo.protocol.Protocol
 import akka.util.ByteString
-import org.example.models.{Tile, Terrain, Id}
-import org.example.models.world.world.{StringIdentity, Position, LivingPlayer, InMemoryWorld}
+import com.github.mumoshu.mmo.models.{Tile, Terrain, Id}
+import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Position, LivingPlayer, InMemoryWorld}
 import tcpip.{DefaultByteStringWriter, PositionedClient, RangedPublisher}
 import scala.concurrent.stm._
 import akka.agent.Agent

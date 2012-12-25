@@ -1,4 +1,4 @@
-package org.example.models
+package com.github.mumoshu.mmo.models
 
 import com.mongodb.casbah.Imports._
 import org.apache.commons.codec.binary.Base64

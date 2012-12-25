@@ -8,7 +8,7 @@ object RunnerBuild extends Build {
     base = file("."),
     settings = Project.defaultSettings ++ Seq(
       name := "foo",
-      organization := "org.example",
+      organization := "com.github.mumoshu.mmo",
       version := "0.1-SNAPSHOT",
       scalaVersion := "2.10.0-RC3",
       resolvers ++= Seq(

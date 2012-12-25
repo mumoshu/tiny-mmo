@@ -1,4 +1,4 @@
-package org.example.server
+package com.github.mumoshu.mmo.server
 
 import org.specs2.mutable._
 import java.net.InetSocketAddress
@@ -7,23 +7,23 @@ import akka.pattern._
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import akka.util.{ByteString, Timeout}
-import org.example.models.world.world._
+import com.github.mumoshu.mmo.models.world.world._
 import akka.util
 import serializers.thrift._
 import scala.Some
 import collection.mutable
 import akka.agent.Agent
 import scala.concurrent.stm._
-import org.example.server.RecordingGameClientObserver
+import com.github.mumoshu.mmo.server.RecordingGameClientObserver
 import scala.Some
-import org.example.server.GameBotImpl
-import org.example.server.GetPosition
-import org.example.models.world.world.Position
-import org.example.server.Send
+import com.github.mumoshu.mmo.server.GameBotImpl
+import com.github.mumoshu.mmo.server.GetPosition
+import com.github.mumoshu.mmo.models.world.world.Position
+import com.github.mumoshu.mmo.server.Send
 import serializers.thrift.Shout
 import serializers.thrift.Say
 import serializers.thrift
-import org.example.server.TCPIPServer.FrameEncoder
+import com.github.mumoshu.mmo.server.TCPIPServer.FrameEncoder
 import akka.actor.IO.Iteratee
 
 case class GetPosition(id: Identity)
