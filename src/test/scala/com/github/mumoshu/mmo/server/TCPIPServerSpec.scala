@@ -57,23 +57,43 @@ object TCPIPServerSpec extends Specification {
 
       val system = ActorSystem("integration")
       val port = 1235
+      val server = TCPIPServer.createServer(port)
       val serverAddress = new InetSocketAddress("localhost", port)
-      def makeBot(name: String): GameBot = {
-        TypedActor(system).typedActorOf(
-          props = TypedProps(classOf[GameBot], new GameBotImpl(serverAddress, name, system)),
-          name = "gameBot-" + name
-        )
-      }
 
       implicit val timeout = util.Timeout(FiniteDuration(5, concurrent.duration.SECONDS))
 
-      val server = TCPIPServer.createServer(port)
+      def makeTcpIpBot(name: String): (GameBot, GameClientObserver) = {
+        val observer = RecordingGameClientObserver()
+        val client = system.actorOf(Props(new GameClient(serverAddress, observer)))
+        (
+          TypedActor(system).typedActorOf(
+            props = TypedProps(classOf[GameBot], new GameBotImpl(client, name)),
+            name = "gameBot-" + name
+          ),
+          observer
+        )
+      }
+
+      def makeAkkaBot(name: String): (GameBot, GameClientObserver) = {
+        val observer = RecordingGameClientObserver()
+        val id = StringIdentity(java.util.UUID.randomUUID().toString)
+        val client = system.actorOf(Props(new AkkaGameClient(id, server, observer)))
+        (
+          TypedActor(system).typedActorOf(
+            props = TypedProps(classOf[GameBot], new GameBotImpl(client, name)),
+            name = "akkaGameBot-" + name
+          ),
+          observer
+        )
+      }
 
       // You need this to wait for the server to start listening
       val world0 = Await.result((server ? "WORLD").mapTo[InMemoryWorld], Duration("5 seconds"))
 
       val numberOfBots = 3
-      val bots = (1 to numberOfBots).map(_.toString).map(makeBot)
+      val botConfigs = (1 to numberOfBots - 1).map(_.toString).map(makeTcpIpBot) ++ List(numberOfBots.toString).map(makeAkkaBot)
+      val bots = botConfigs.map(_._1)
+      val observers = botConfigs.map(_._2)
 
       Thread.sleep(3000)
 
@@ -98,9 +118,9 @@ object TCPIPServerSpec extends Specification {
       val world3 = Await.result((server ? "WORLD").mapTo[InMemoryWorld], Duration("5 seconds"))
       world3.things must be size(2)
 
-      bots(0).observer.asInstanceOf[RecordingGameClientObserver].observed must be size(3) // bots(0) joins and then bots(1) joins, then bots(2) joins
-      bots(1).observer.asInstanceOf[RecordingGameClientObserver].observed must be size(3) // bots(1) joins and then bots(2) joins, then bots(0) leaves
-      bots(2).observer.asInstanceOf[RecordingGameClientObserver].observed must be size(2) // bots(2) joins and then bots(0) leaves
+      observers(0).asInstanceOf[RecordingGameClientObserver].observed must be size(3) // bots(0) joins and then bots(1) joins, then bots(2) joins
+      observers(1).asInstanceOf[RecordingGameClientObserver].observed must be size(3) // bots(1) joins and then bots(2) joins, then bots(0) leaves
+      observers(2).asInstanceOf[RecordingGameClientObserver].observed must be size(2) // bots(2) joins and then bots(0) leaves
 
       val selfId: Identity = bots(1).selfId.get
       println("bots(1).selfId: " + selfId)
@@ -121,8 +141,8 @@ object TCPIPServerSpec extends Specification {
       bots(1).getPos(selfId) must not be equalTo (Position(1f, 2f))
       bots(1).attack(targetId)
 
-      println(bots(1).observer.asInstanceOf[RecordingGameClientObserver].observed)
-      println(bots(2).observer.asInstanceOf[RecordingGameClientObserver].observed)
+      println(observers(1).asInstanceOf[RecordingGameClientObserver].observed)
+      println(observers(2).asInstanceOf[RecordingGameClientObserver].observed)
 
       def after {
         server ! "STOP"

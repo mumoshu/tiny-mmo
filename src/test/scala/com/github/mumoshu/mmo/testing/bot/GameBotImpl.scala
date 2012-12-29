@@ -1,7 +1,7 @@
 package com.github.mumoshu.mmo.testing.bot
 
 import java.net.InetSocketAddress
-import akka.actor.{Props, TypedActor, ActorSystem}
+import akka.actor.{ActorRef, Props, TypedActor, ActorSystem}
 import akka.util
 import com.github.mumoshu.mmo.server.TCPIPServer
 import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Identity, Position}
@@ -13,11 +13,9 @@ import akka.pattern._
 import concurrent.duration._
 
 // Stateful
-case class GameBotImpl(serverAddress: InetSocketAddress, playerName: String = "mumoshu", system: ActorSystem, observer: GameClientObserver = RecordingGameClientObserver()) extends GameBot { // with GameClientObserver
+case class GameBotImpl(client: ActorRef, playerName: String = "mumoshu") extends GameBot { // with GameClientObserver
 
   import TypedActor.dispatcher
-
-  val client = system.actorOf(Props(new GameClient(serverAddress, observer)))
 
   implicit val timeout = util.Timeout(5 seconds)
 

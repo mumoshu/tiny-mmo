@@ -4,7 +4,7 @@ import org.specs2.mutable._
 import akka.actor.IO
 import org.specs2.mock.Mockito
 import akka.util.ByteString
-import com.github.mumoshu.mmo.models.world.world.Position
+import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Position}
 
 object RangedPublisherSpec extends Specification with Mockito {
 
@@ -21,18 +21,17 @@ object RangedPublisherSpec extends Specification with Mockito {
       val handle2 = mock[IO.SocketHandle]
       val client1Observer = mock[PositionedClientObserver]
       val client2Observer = mock[PositionedClientObserver]
-      val client1 = new PositionedClient(handle1, position, observer = client1Observer)
-      val client2 = new PositionedClient(handle2, position, observer = client2Observer)
+      val id1 = StringIdentity("id1")
+      val id2 = StringIdentity("id2")
+      val client1 = mock[Channel]
+      val client2 = mock[Channel]
 
       implicit val any2ByteString = DefaultByteStringWriter
 
-      pub.accept(client1).accept(client2).publish("foo").clients.forall { _.received must be size(1) }
+      pub.accept(id1, client1).accept(id2, client2).publish("foo")
 
-      there was one(client1Observer).receive("foo") then
-        one(client2Observer).receive("foo")
-
-      there was one(handle1).write(ByteString("foo")) then
-        one(handle2).write(ByteString("foo"))
+      there was one(client1).write("foo") then
+        one(client2).write("foo")
 
     }
   }

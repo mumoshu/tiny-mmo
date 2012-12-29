@@ -1,6 +1,7 @@
 package com.github.mumoshu.mmo.models.world.world
 
-import com.github.mumoshu.mmo.models.Terrain
+import com.github.mumoshu.mmo.models.{ChangeLogger, Terrain}
+import com.github.mumoshu.mmo.server.Change
 
 sealed trait Identity {
   /**
@@ -224,15 +225,25 @@ sealed trait Speech {
 case class Say(id: Identity, text: String) extends Speech
 case class Shout(id: Identity, text: String) extends Speech
 
-class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech]) extends World {
+case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech], changeLogger: ChangeLogger) extends World {
+  def findAllThings(identity: Identity): InMemoryWorld = copy(changeLogger = changeLogger.tellThings(identity, things))
+
+  def getPosition(identity: Identity, targetId: Identity): InMemoryWorld =
+    copy(changeLogger = changeLogger.toldPosition(identity, targetId, things.find(_.id == targetId).get.position))
+
+  def myId(identity: Identity): InMemoryWorld = copy(changeLogger = changeLogger.toldOwnId(identity))
+
+
+  def replay(): InMemoryWorld = copy(changeLogger = changeLogger.replay())
+
   def say(p: Thing, text: String) =
-    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Say(p.id, text))
+    copy(speeches = speeches :+ Say(p.id, text), changeLogger = changeLogger.said(p.id, text))
 
   def appear(t: Thing) =
-    new InMemoryWorld(things = things :+ t, terrain = terrain, speeches = speeches)
+    copy(things = things :+ t)
 
   def disappear(t: Thing) =
-    new InMemoryWorld(things = things.filter(_ != t), terrain = terrain, speeches = speeches)
+    copy(things = things.filter(_ != t))
 
   def attack(attacker: Attacker, target: Target) = {
     // TODO atk - def
@@ -247,7 +258,7 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
       throw new RuntimeException("Target not found.")
     }
     (
-      new InMemoryWorld(things = thingsAfter, terrain = terrain, speeches = speeches),
+      copy(things = thingsAfter, changeLogger = changeLogger.attacked(attacker.id, target.id)),
       attacker,
       t2
     )
@@ -257,20 +268,18 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
 
   def findExcept(id: Identity) = things.filterNot(_.id == id)
 
-  def join(p: LivingPlayer) = new InMemoryWorld(things = things :+ p, terrain = terrain, speeches = speeches)
+  def join(p: LivingPlayer) = copy(things = things :+ p, changeLogger = changeLogger.joined(p.id, "someone"))
 
-  def leave(p: LivingPlayer) = new InMemoryWorld(things = things.filter(_.id != p.id), terrain = terrain, speeches = speeches)
+  def leave(p: LivingPlayer) = copy(things = things.filter(_.id != p.id), changeLogger = changeLogger.left(p.id))
 
   def tryMove(thing: Thing, movement: Movement) = (
-    new InMemoryWorld(
+    copy(
       things = things.map {
         case t if t.id == thing.id =>
           t.tryMove(movement)(this)
         case t =>
           t
-      },
-      terrain = terrain,
-      speeches = speeches
+      }
     ),
     thing
   )
@@ -282,15 +291,14 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
   def tryMoveTo(t: Thing, p: Position) = {
     val moved = t.tryMoveTo(p)(this)
     (
-      new InMemoryWorld(
+      copy(
         things = things.map {
           case tt if tt.id == t.id =>
             moved
           case tt =>
             tt
         },
-        terrain = terrain,
-        speeches = speeches
+        changeLogger = changeLogger.movedTo(t.id, p)
       ),
       moved
     )
@@ -312,7 +320,7 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
       throw new RuntimeException("Target not found.")
     }
     (
-      new InMemoryWorld(things = thingsAfter, terrain = terrain, speeches = speeches),
+      copy(things = thingsAfter, changeLogger = changeLogger.attacked(attackerId, targetId)),
       attacker,
       t2
       )
@@ -321,25 +329,24 @@ class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches:
   def tryMove(id: Identity, p: Position): (World, Thing) = {
     val moved = things.filter(_.id == id).head.tryMoveTo(p)(this)
     (
-      new InMemoryWorld(
+      copy(
         things = things.map {
           case tt if tt.id == id =>
             moved
           case tt =>
             tt
         },
-        terrain = terrain,
-        speeches = speeches
+        changeLogger = changeLogger.movedTo(id, p)
       ),
       moved
       )
   }
 
   def trySay(id: Identity, what: String) = {
-    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Say(id, what))
+    copy(speeches = speeches :+ Say(id, what), changeLogger = changeLogger.said(id, what))
   }
 
   def tryShout(id: Identity, what: String) = {
-    new InMemoryWorld(things = things, terrain = terrain, speeches = speeches :+ Shout(id, what))
+    copy(speeches = speeches :+ Shout(id, what), changeLogger = changeLogger.shout(id, what))
   }
 }

@@ -5,14 +5,42 @@ import ActorDSL._
 import java.net.InetSocketAddress
 import com.github.mumoshu.mmo.protocol.Protocol
 import akka.util.ByteString
-import com.github.mumoshu.mmo.models.{Tile, Terrain, Id}
-import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Position, LivingPlayer, InMemoryWorld}
-import tcpip.{DefaultByteStringWriter, PositionedClient, RangedPublisher}
+import com.github.mumoshu.mmo.models._
+import com.github.mumoshu.mmo.models.world.world._
+import tcpip._
 import scala.concurrent.stm._
 import akka.agent.Agent
 import java.util
 import com.github.mumoshu.mmo.thrift
 import org.slf4j.LoggerFactory
+import org.apache.thrift.TBase
+import com.github.mumoshu.mmo.models.world.world.Position
+import scala.Some
+import com.github.mumoshu.mmo.models.world.world.StringIdentity
+import com.github.mumoshu.mmo.server.WorldServer
+import com.github.mumoshu.mmo.models.world.world.LivingPlayer
+import com.github.mumoshu.mmo.models.world.world.Position
+import tcpip.ActorChannel
+import tcpip.RangedPublisher
+import com.github.mumoshu.mmo.server.Change
+import com.github.mumoshu.mmo.server.ReceivedLetter
+import com.github.mumoshu.mmo.server.WorldServer
+import scala.Some
+import com.github.mumoshu.mmo.models.world.world.StringIdentity
+import com.github.mumoshu.mmo.models.world.world.LivingPlayer
+import com.github.mumoshu.mmo.models.world.world.InMemoryWorld
+import tcpip.RangedPublisher
+import tcpip.SocketChannel
+import thrift.message.{Attack, MoveTo, Leave, Join}
+import scala.Some
+import world.world.InMemoryWorld
+import world.world.LivingPlayer
+import world.world.Position
+import com.github.mumoshu.mmo.models.Terrain
+import com.github.mumoshu.mmo.server.Change
+import com.github.mumoshu.mmo.server.ReceivedLetter
+import com.github.mumoshu.mmo.server.WorldServer
+import world.world.StringIdentity
 
 /**
  * See http://stackoverflow.com/questions/12959709/send-a-tcp-ip-message-akka-actor
@@ -21,6 +49,7 @@ import org.slf4j.LoggerFactory
 
 object TCPIPServer extends TCPIPServer
 
+// TODO Rename to AkkaWorldServer
 class TCPIPServer {
 
   val log = LoggerFactory.getLogger(classOf[TCPIPServer])
@@ -80,7 +109,7 @@ class TCPIPServer {
 
   def createServer(port: Int = 1234) = actor(new Act with ActorLogging {
 
-    val world = Agent(new InMemoryWorld(List.empty, Terrain(Array(Array(Tile.Ground, Tile.Ground))), List.empty))
+//    val world = Agent(new InMemoryWorld(List.empty, Terrain(Array(Array(Tile.Ground, Tile.Ground))), List.empty, changeLogger))
     val publisher = Agent(RangedPublisher(10f))
     val state = IO.IterateeRef.Map.async[IO.Handle]()(context.dispatcher)
 
@@ -97,6 +126,21 @@ class TCPIPServer {
 
     log.debug("Now listening on " + address)
 
+    val server = Agent(new WorldServer(
+      new InMemoryWorld(List.empty, Terrain(Array(Array(Tile.Ground, Tile.Ground))), List.empty, changeLogger)
+    ))
+
+    // TODO Agent
+    var channels = Map.empty[Identity, Channel]
+
+    def setChannel(id: Identity, channel: Channel) {
+      atomic { txn =>
+        channels = channels.updated(id, channel)
+      }
+    }
+
+    def getChannel(id: Identity) = channels(id)
+
     def processSingle(handle: IO.SocketHandle, bytes: ByteString) {
       import protocol._
       log.debug("Read: " + handle.uuid)
@@ -104,73 +148,90 @@ class TCPIPServer {
       val identity = handle
       val id = StringIdentity(handle.uuid.toString)
       val deserialized = deserialize(bytes)
-      log.debug("Server deserialized the message: " + deserialized)
+      log.debug("WorldServer deserialized the message: " + deserialized)
+      setChannel(id, SocketChannel(handle, any2ByteString))
+      receiveLetter(ReceivedLetter(id, deserialized))
+    }
+
+    lazy val changeLogger = MyChangeLogger(publisher)
+
+    case class MyChangeLogger(publisher: Agent[RangedPublisher], changeLogs: List[ChangeLog] = List.empty) extends ChangeLogger {
+      def changeLog(block: => Unit): ChangeLogger = copy(changeLogs = changeLogs :+ ChangeLog(block))
+      def replay() = {
+        changeLogs.foreach(_.replay())
+        copy(changeLogs = List.empty)
+      }
+      def joined(id: Identity, name: String) = changeLog {
+        val m = new Join()
+        m.name = name
+        publisher send {
+          //                _.accept(PositionedClient(getChannel(id), Position(0f, 0f))).publish(m)
+          //                val positionProvider = { id: Identity => server().world.find(id).get.position }
+          //                _.accept(id, getChannel(id)).publish(m)(positionProvider)
+          _.accept(id, getChannel(id)).publish(m)
+        }
+
+      }
+      def left(id: Identity) = changeLog {
+        publisher.send { pub =>
+          val m = new Leave()
+          pub.remove(id).publish(m)
+          //                pub.clients.filter(_.handle.uuid == handle.asSocket.uuid).foldLeft(pub) { (res, c) =>
+          //                  res.remove(c)
+          //                }.publish(m)
+        }
+      }
+      def movedTo(id: Identity, position: Position) = changeLog {
+        val m = new MoveTo(id.str, position.x, position.z)
+        publish(m)
+      }
+      def attacked(id: Identity, targetId: Identity) = changeLog {
+        val m = new Attack(id.str, targetId.str)
+        publish(m)
+      }
+      def said(id: Identity, what: String) = changeLog {
+        val m = new thrift.message.Say(id.str, what)
+        publish(m)
+      }
+      def shout(id: Identity, what: String) = changeLog {
+        val m = new thrift.message.Shout(id.str, what)
+        publish(m)
+      }
+      def toldOwnId(id: Identity) = changeLog {
+        val m = new thrift.message.YourId(id.str)
+        getChannel(id).write(m)
+      }
+      def toldPosition(id: Identity, targetId: Identity, position: Position) = changeLog {
+        val m = new thrift.message.Position(targetId.str, position.x, position.z)
+        getChannel(id).write(m)
+      }
+      def tellThings(id: Identity, tt: List[Thing]) = changeLog {
+        val m = new thrift.message.Things()
+        m.ts = new java.util.ArrayList[thrift.message.Thing]()
+        tt.foreach { t =>
+        // Things other than the client are included
+          if (t.id != id) {
+            val p = new thrift.message.Position(t.id.str, t.position.x.toDouble, t.position.z.toDouble)
+            m.ts.add(new thrift.message.Thing(t.id.str, p))
+          }
+        }
+        getChannel(id).write(m)
+      }
+//      case rep: thrift.message.Position =>
+      //              val targetId = StringIdentity(m.id)
+      //              val p = world.get().things.find(_.id == targetId).get.position
+      //              val rep: thrift.message.Position = new thrift.message.Position(targetId.str, p.x.toFloat, p.z.toFloat)
+      //              handle.asWritable.write(FrameEncoder(data))
+    }
+
+    def receiveLetter(letter: ReceivedLetter[AnyRef]) {
+      val id = letter.sender
       atomic { txn =>
         log.debug("Beginning a transaction")
-        deserialized match {
-          case m: thrift.message.Join =>
-            world send {
-              _.join(new LivingPlayer(id, 10f, Position(0f, 0f)))
-            }
-            publisher send {
-              _.accept(PositionedClient(handle.asSocket, Position(0f, 0f))).publish(m)
-            }
-          case m: thrift.message.Leave =>
-            world.send {
-              _.leave(new LivingPlayer(id, 0f, Position(0f, 0f)))
-            }
-            // TODO Use STM
-            publisher.send { pub =>
-              pub.clients.filter(_.handle.uuid == handle.asSocket.uuid).foldLeft(pub) { (res, c) =>
-                res.remove(c)
-              }.publish(m)
-            }
-          case m: thrift.message.MoveTo =>
-            // TODO you only need id
-            world.send {
-              _.tryMoveTo(new LivingPlayer(id, 10f, Position(0f, 0f)), Position(m.x.toFloat, m.z.toFloat))._1
-            }
-            publish(m)
-          case m: thrift.message.Attack =>
-            // TODO attack if the thing identified by id can be an attacker
-            world.send {
-              _.tryAttack(id, StringIdentity(m.targetId))._1
-            }
-            publish(m)
-          case m: thrift.message.Say =>
-            world.send {
-              _.trySay(id, m.text)
-            }
-            publish(m)
-          case m: thrift.message.Shout =>
-            world.send {
-              _.tryShout(id, m.text)
-            }
-            publish(m)
-          case m: thrift.message.MyId =>
-            val m: thrift.message.YourId = new thrift.message.YourId(id.str)
-            val data = protocol.serialize(m)
-            handle.asWritable.write(FrameEncoder(data))
-            log.debug("Wrote: " + m)
-          case m: thrift.message.GetPosition =>
-            val targetId = StringIdentity(m.id)
-            val p = world.get().things.find(_.id == targetId).get.position
-            val rep: thrift.message.Position = new thrift.message.Position(targetId.str, p.x.toFloat, p.z.toFloat)
-            val data = protocol.serialize(rep)
-            handle.asWritable.write(FrameEncoder(data))
-            log.debug("Wrote: " + rep)
-          case m: thrift.message.FindAllThings =>
-            val things = new thrift.message.Things()
-            things.ts = new java.util.ArrayList[thrift.message.Thing]()
-            world.get().things.foreach { t =>
-            // Things other than the client are included
-              if (t.id != id) {
-                val p = new thrift.message.Position(t.id.str, t.position.x.toDouble, t.position.z.toDouble)
-                things.ts.add(new thrift.message.Thing(t.id.str, p))
-              }
-            }
-            val data = protocol.serialize(things)
-            handle.asWritable.write(FrameEncoder(data))
+        server send {
+          import thrift.message._
+          log.debug("Receive & Replay")
+          (_: WorldServer).receive(letter).replay()
         }
       }
     }
@@ -203,11 +264,61 @@ class TCPIPServer {
         log.debug("Closing the server socket")
         socket.close()
       case "WORLD" =>
-        sender ! world.get
+        sender ! server.get().world
+      case letter: ReceivedLetter[_] =>
+        setChannel(letter.sender, ActorChannel(sender))
+        receiveLetter(letter.asInstanceOf[ReceivedLetter[AnyRef]])
       case unexpected =>
         log.debug("Unexpected message: " + unexpected)
     }
   })
 
   lazy val server = createServer(1234)
+}
+
+case class ReceivedLetter[A](sender: Identity, message: A)
+case class SendingLetter[A](recipient: Identity, message: A)
+case class Change(id: Identity, message: AnyRef)
+trait ChangeLog {
+  def replay(): Unit
+}
+object ChangeLog {
+  def apply(block: => Unit) = new ChangeLog {
+    def replay = block
+  }
+}
+
+case class WorldServer(world: InMemoryWorld) {
+
+  val logger = LoggerFactory.getLogger(classOf[WorldServer])
+
+  def receive(letter: ReceivedLetter[AnyRef]): WorldServer = {
+    val sender = letter.sender
+    val message = letter.message
+    logger.debug("Received: " + letter)
+    copy(
+      message match {
+        case m: thrift.message.Join =>
+          world.join(new LivingPlayer(sender, 10f, Position(0f, 0f)))
+        case m: thrift.message.Leave =>
+          world.leave(new LivingPlayer(sender, 0f, Position(0f, 0f)))
+        case m: thrift.message.MoveTo =>
+          world.tryMoveTo(new LivingPlayer(sender, 10f, Position(0f, 0f)), Position(m.x.toFloat, m.z.toFloat))._1
+        case m: thrift.message.Attack =>
+          world.tryAttack(sender, StringIdentity(m.targetId))._1
+        case m: thrift.message.Say =>
+          world.trySay(sender, m.text)
+        case m: thrift.message.Shout =>
+          world.tryShout(sender, m.text)
+        case m: thrift.message.MyId =>
+          world.myId(sender)
+        case m: thrift.message.GetPosition =>
+          world.getPosition(sender, StringIdentity(m.id))
+        case m: thrift.message.FindAllThings =>
+          world.findAllThings(sender)
+      }
+    )
+  }
+
+  def replay(): WorldServer = copy(world = world.replay())
 }

@@ -4,7 +4,6 @@ import com.github.mumoshu.mmo.models.world.world.{Identity, Position}
 import com.github.mumoshu.mmo.testing.GameClientObserver
 
 trait GameBot {
-  def observer: GameClientObserver
   def join()
   def moveTo(p: Position)
   def leave()
