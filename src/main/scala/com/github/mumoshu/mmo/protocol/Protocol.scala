@@ -8,7 +8,7 @@ import com.github.mumoshu.mmo.thrift
 
 trait Protocol {
 
-  val log2 = LoggerFactory.getLogger(this.getClass)
+  val lof = LoggerFactory.getLogger(this.getClass)
 
   type Payload
 
@@ -130,7 +130,7 @@ trait Protocol {
           }
           val available = bais.available()
           if (available != 0) {
-            log2.warn(available + " bytes left", new RuntimeException)
+            lof.warn(available + " bytes left", new RuntimeException)
           }
           data
     }

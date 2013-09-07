@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
 class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
   extends SymmetricPipelineStage[PipelineContext, AnyRef, (Byte, Array[Byte])] {
 
-  val log2 = LoggerFactory.getLogger(this.getClass)
+  val log = LoggerFactory.getLogger(this.getClass)
 
   override def apply(ctx: PipelineContext) =
     new SymmetricPipePair[AnyRef, (Byte, Array[Byte])] {
@@ -99,7 +99,7 @@ class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
           case Success(belowCmd) =>
             ctx.singleCommand(belowCmd)
           case Failure(NonFatal(e)) =>
-            log2.error("Exception while serializing a messsage.", e)
+            log.error("Exception while serializing a messsage.", e)
             ctx.nothing
         }
       }
@@ -200,14 +200,14 @@ class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
           }
           val available = bais.available()
           if (available != 0) {
-            log2.warn(available + " bytes left", new RuntimeException)
+            log.warn(available + " bytes left", new RuntimeException)
           }
           above
         } match {
           case Success(aboveEvt) =>
             ctx.singleEvent(aboveEvt)
           case Failure(NonFatal(e)) =>
-            log2.error("Exception while deserializing a message", e)
+            log.error("Exception while deserializing a message", e)
             ctx.nothing
         }
       }
