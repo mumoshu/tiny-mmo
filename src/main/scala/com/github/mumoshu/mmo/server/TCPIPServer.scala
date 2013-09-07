@@ -10,36 +10,16 @@ import com.github.mumoshu.mmo.models.world.world._
 import tcpip._
 import scala.concurrent.stm._
 import akka.agent.Agent
-import java.util
 import com.github.mumoshu.mmo.thrift
 import org.slf4j.LoggerFactory
-import org.apache.thrift.TBase
-import com.github.mumoshu.mmo.models.world.world.Position
-import scala.Some
-import com.github.mumoshu.mmo.models.world.world.StringIdentity
-import com.github.mumoshu.mmo.server.WorldServer
-import com.github.mumoshu.mmo.models.world.world.LivingPlayer
-import com.github.mumoshu.mmo.models.world.world.Position
 import tcpip.ActorChannel
-import tcpip.RangedPublisher
-import com.github.mumoshu.mmo.server.Change
-import com.github.mumoshu.mmo.server.ReceivedLetter
-import com.github.mumoshu.mmo.server.WorldServer
-import scala.Some
-import com.github.mumoshu.mmo.models.world.world.StringIdentity
-import com.github.mumoshu.mmo.models.world.world.LivingPlayer
-import com.github.mumoshu.mmo.models.world.world.InMemoryWorld
 import tcpip.RangedPublisher
 import tcpip.SocketChannel
 import thrift.message.{Attack, MoveTo, Leave, Join}
-import scala.Some
 import world.world.InMemoryWorld
 import world.world.LivingPlayer
 import world.world.Position
 import com.github.mumoshu.mmo.models.Terrain
-import com.github.mumoshu.mmo.server.Change
-import com.github.mumoshu.mmo.server.ReceivedLetter
-import com.github.mumoshu.mmo.server.WorldServer
 import world.world.StringIdentity
 import scala.concurrent.ExecutionContext
 
