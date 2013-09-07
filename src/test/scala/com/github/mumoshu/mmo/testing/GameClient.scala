@@ -13,9 +13,10 @@ import com.github.mumoshu.mmo.thrift
 import java.net.InetSocketAddress
 
 import bot._
+import scala.concurrent.ExecutionContext
 
 // Stateful
-class GameClient(address: InetSocketAddress, observer: GameClientObserver) extends Actor with ActorLogging {
+class GameClient(address: InetSocketAddress, observer: GameClientObserver)(implicit executionContext: ExecutionContext) extends Actor with ActorLogging {
 
   log.debug("Connecting to " + address)
 

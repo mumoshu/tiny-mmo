@@ -41,16 +41,17 @@ import com.github.mumoshu.mmo.server.Change
 import com.github.mumoshu.mmo.server.ReceivedLetter
 import com.github.mumoshu.mmo.server.WorldServer
 import world.world.StringIdentity
+import scala.concurrent.ExecutionContext
 
 /**
  * See http://stackoverflow.com/questions/12959709/send-a-tcp-ip-message-akka-actor
  * and http://doc.akka.io/docs/akka/snapshot/scala/io.html
  */
 
-object TCPIPServer extends TCPIPServer
+object TCPIPServer extends TCPIPServer()(ExecutionContext.global)
 
 // TODO Rename to AkkaWorldServer
-class TCPIPServer {
+class TCPIPServer(implicit val executionContext: ExecutionContext) {
 
   val log = LoggerFactory.getLogger(classOf[TCPIPServer])
 

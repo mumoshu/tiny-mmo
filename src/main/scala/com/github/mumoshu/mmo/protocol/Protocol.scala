@@ -1,6 +1,6 @@
 package com.github.mumoshu.mmo.protocol
 
-import akka.zeromq.{Frame, ZMQMessage}
+import akka.zeromq.{ZMQMessage}
 import org.apache.thrift.transport.TIOStreamTransport
 import org.apache.thrift.protocol.TBinaryProtocol
 import org.slf4j.LoggerFactory

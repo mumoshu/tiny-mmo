@@ -8,9 +8,10 @@ import bot._
 import com.github.mumoshu.mmo.thrift
 import com.github.mumoshu.mmo.models.world.world.{Identity, StringIdentity, Position}
 import com.github.mumoshu.mmo.server.{ReceivedLetter, TCPIPServer}
+import scala.concurrent.ExecutionContext
 
 // Stateful
-class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserver) extends Actor with ActorLogging {
+class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserver)(implicit val executionContext: ExecutionContext) extends Actor with ActorLogging {
 
   log.debug("Connecting to an server actor: " + server.path)
 

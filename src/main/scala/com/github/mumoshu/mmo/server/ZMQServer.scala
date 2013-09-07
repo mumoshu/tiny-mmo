@@ -12,13 +12,14 @@ import akka.zeromq.Connect
 import akka.zeromq.Listener
 import akka.zeromq.Bind
 import collection.generic.SeqFactory
+import akka.util.ByteString
 
 // 'brew install zeromq'
 object ZMQServer {
 
   val protocol = new Protocol {
 
-    type Payload = Seq[Frame]
+    type Payload = Seq[ByteString]
 
     val codec = new Codec[Payload] {
       /**
@@ -29,8 +30,10 @@ object ZMQServer {
       def unapply(m: Payload) = {
         m match {
           case Seq(header, body@_*) =>
-            val Seq(hint) = header.payload
-            val bytes = body.map(_.payload.toArray).reduce(_++_)
+            val hint = header.lift(0).getOrElse {
+              throw new RuntimeException(s"Unexpected length of header: #{header.length} bytes. Expected 1 byte.")
+            }
+            val bytes = body.map(_.toArray).reduce(_++_)
             Some((hint, bytes))
           case unexpected =>
             throw new RuntimeException("Unexpected ZMQMessage format: " + unexpected)
@@ -44,7 +47,7 @@ object ZMQServer {
        * @return
        */
       def apply(hint: Byte, bytes: Array[Byte]) =
-        Seq(Frame(Seq(hint)), Frame(bytes.toSeq))
+        Seq(ByteString(hint), ByteString(bytes))
     }
   }
 
@@ -74,7 +77,7 @@ object ZMQServer {
         log.info("Connecting")
       case m: String =>
         log.info("message: " + m)
-        client ! ZMQMessage(Seq(Frame(m)))
+        client ! ZMQMessage(ByteString(m))
       case unexpected =>
         log.warning("Unexpected " + unexpected)
     }
@@ -142,7 +145,7 @@ object ZMQServer {
         log.info("message: " + m)
         val idFrame = identity
         val emptyFrame = m.frames(1)
-        val id = Id.fromByteArray(identity.payload.toArray)
+        val id = Id.fromByteArray(identity.toArray)
         deserialize(frames) match {
           case m: thrift.message.Join =>
             val p = MongoBackedWorld.join(
@@ -150,28 +153,28 @@ object ZMQServer {
               id = id.toString
             )
             // Notify the client that the client has successfully joined
-            worker ! ZMQMessage(Seq(idFrame, emptyFrame, Frame("authenticated")))
+            worker ! ZMQMessage(idFrame, emptyFrame, ByteString("authenticated"))
             // Notify all currently connected clients that the new client has joined
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
-              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val recipient = ByteString(Id.fromString(p.id).toByteArray)
               val frames = serialize(new thrift.message.Joined(id.toString))
-              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
+              val mm = ZMQMessage((Seq(recipient, emptyFrame) ++ frames) : _*)
               worker ! mm
             }
           case m: thrift.message.Move =>
             MongoBackedWorld.tryMove(id = id.toString, x = m.x)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
-              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val recipient = ByteString(Id.fromString(p.id).toByteArray)
               val frames = serialize(new thrift.message.Moved(id.toString, m.x))
-              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
+              val mm = ZMQMessage((Seq(recipient, emptyFrame) ++ frames) : _*)
               worker ! mm
             }
           case m: thrift.message.Leave =>
             MongoBackedWorld.leave(id = id.toString)
             MongoBackedWorld.findExcept(id.toString).foreach { p =>
-              val recipient = Frame(Id.fromString(p.id).toByteArray)
+              val recipient = ByteString(Id.fromString(p.id).toByteArray)
               val frames = serialize(new thrift.message.Left(id.toString))
-              val mm = ZMQMessage(Seq(recipient, emptyFrame) ++ frames)
+              val mm = ZMQMessage((Seq(recipient, emptyFrame) ++ frames) : _*)
               worker ! mm
             }
         }

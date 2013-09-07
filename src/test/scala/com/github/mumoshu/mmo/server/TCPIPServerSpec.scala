@@ -4,7 +4,7 @@ import org.specs2.mutable._
 import java.net.InetSocketAddress
 import akka.actor._
 import akka.pattern._
-import scala.concurrent.Await
+import scala.concurrent.{ExecutionContext, Await}
 import scala.concurrent.duration._
 import akka.util.{ByteString, Timeout}
 import com.github.mumoshu.mmo.models.world.world._
@@ -14,6 +14,7 @@ import bot.{GameBotImpl, GameBot}
 import com.github.mumoshu.mmo.models.world.world.Position
 import com.github.mumoshu.mmo.testing.RecordingGameClientObserver
 import com.github.mumoshu.mmo.thrift
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Tester {
 
@@ -77,7 +78,7 @@ object TCPIPServerSpec extends Specification {
       def makeAkkaBot(name: String): (GameBot, GameClientObserver) = {
         val observer = RecordingGameClientObserver()
         val id = StringIdentity(java.util.UUID.randomUUID().toString)
-        val client = system.actorOf(Props(new AkkaGameClient(id, server, observer)))
+        val client = system.actorOf(Props(new AkkaGameClient(id, server, observer)(ExecutionContext.global)))
         (
           TypedActor(system).typedActorOf(
             props = TypedProps(classOf[GameBot], new GameBotImpl(client, name)),
