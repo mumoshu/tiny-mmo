@@ -4,40 +4,40 @@ import collection.mutable
 import com.github.mumoshu.mmo.thrift.message._
 
 // This is mutable
-case class RecordingGameClientObserver(observed: collection.mutable.MutableList[AnyRef] = mutable.MutableList.empty) extends GameClientObserver {
+case class RecordingGameClientObserver(observedMessages: collection.mutable.MutableList[AnyRef] = mutable.MutableList.empty) extends GameClientObserver {
   def observe(t: Join) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Leave) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Attack) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: MoveTo) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Say) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Shout) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Position) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: YourId) {
-    observed += t
+    observedMessages += t
   }
 
   def observe(t: Things) {
-    observed += t
+    observedMessages += t
   }
 }

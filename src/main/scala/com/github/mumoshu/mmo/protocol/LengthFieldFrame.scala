@@ -8,7 +8,7 @@ import scala.annotation.tailrec
 class LengthFieldFrame(maxSize: Int,
                        byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN,
                        headerSize: Int = 4,
-                       lengthIncludesHeader: Boolean = true)
+                       lengthIncludesHeader: Boolean = false)
   extends SymmetricPipelineStage[PipelineContext, ByteString, ByteString] {
 
   // range checks omitted ...
@@ -26,6 +26,7 @@ class LengthFieldFrame(maxSize: Int,
       @tailrec
       def extractFrames(bs: ByteString, acc: List[ByteString]) //
       : (Option[ByteString], Seq[ByteString]) = {
+        println(s"DATA_TO_EXTRACT_FRAMES: ${bs}")
         if (bs.isEmpty) {
           (None, acc)
         } else if (bs.length < headerSize) {
@@ -71,6 +72,7 @@ class LengthFieldFrame(maxSize: Int,
       override def eventPipeline =
       { bs: ByteString ⇒
         val data = if (buffer.isEmpty) bs else buffer.get ++ bs
+        println(s"DATA: ${data}")
         val (nb, frames) = extractFrames(data, Nil)
         buffer = nb
         /*

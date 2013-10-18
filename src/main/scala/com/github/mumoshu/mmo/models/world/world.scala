@@ -1,7 +1,6 @@
 package com.github.mumoshu.mmo.models.world.world
 
-import com.github.mumoshu.mmo.models.{ChangeLogger, Terrain}
-import com.github.mumoshu.mmo.server.Change
+import com.github.mumoshu.mmo.models.{WorldChangeHandler, Terrain}
 
 sealed trait Identity {
   /**
@@ -225,19 +224,19 @@ sealed trait Speech {
 case class Say(id: Identity, text: String) extends Speech
 case class Shout(id: Identity, text: String) extends Speech
 
-case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech], changeLogger: ChangeLogger) extends World {
-  def findAllThings(identity: Identity): InMemoryWorld = copy(changeLogger = changeLogger.tellThings(identity, things))
+case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech], changeHandler: WorldChangeHandler) extends World {
+  def findAllThings(identity: Identity): InMemoryWorld = copy(changeHandler = changeHandler.tellThings(identity, things))
 
   def getPosition(identity: Identity, targetId: Identity): InMemoryWorld =
-    copy(changeLogger = changeLogger.toldPosition(identity, targetId, things.find(_.id == targetId).get.position))
+    copy(changeHandler = changeHandler.toldPosition(identity, targetId, things.find(_.id == targetId).get.position))
 
-  def myId(identity: Identity): InMemoryWorld = copy(changeLogger = changeLogger.toldOwnId(identity))
+  def myId(identity: Identity): InMemoryWorld = copy(changeHandler = changeHandler.toldOwnId(identity))
 
 
-  def replay(): InMemoryWorld = copy(changeLogger = changeLogger.replay())
+  def replayChanges(): InMemoryWorld = copy(changeHandler = changeHandler.handleAllChanges())
 
   def say(p: Thing, text: String) =
-    copy(speeches = speeches :+ Say(p.id, text), changeLogger = changeLogger.said(p.id, text))
+    copy(speeches = speeches :+ Say(p.id, text), changeHandler = changeHandler.said(p.id, text))
 
   def appear(t: Thing) =
     copy(things = things :+ t)
@@ -258,7 +257,7 @@ case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val spee
       throw new RuntimeException("Target not found.")
     }
     (
-      copy(things = thingsAfter, changeLogger = changeLogger.attacked(attacker.id, target.id)),
+      copy(things = thingsAfter, changeHandler = changeHandler.attacked(attacker.id, target.id)),
       attacker,
       t2
     )
@@ -268,9 +267,9 @@ case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val spee
 
   def findExcept(id: Identity) = things.filterNot(_.id == id)
 
-  def join(p: LivingPlayer) = copy(things = things :+ p, changeLogger = changeLogger.joined(p.id, "someone"))
+  def join(p: LivingPlayer) = copy(things = things :+ p, changeHandler = changeHandler.joined(p.id, "someone"))
 
-  def leave(p: LivingPlayer) = copy(things = things.filter(_.id != p.id), changeLogger = changeLogger.left(p.id))
+  def leave(p: LivingPlayer) = copy(things = things.filter(_.id != p.id), changeHandler = changeHandler.left(p.id))
 
   def tryMove(thing: Thing, movement: Movement) = (
     copy(
@@ -298,7 +297,7 @@ case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val spee
           case tt =>
             tt
         },
-        changeLogger = changeLogger.movedTo(t.id, p)
+        changeHandler = changeHandler.movedTo(t.id, p)
       ),
       moved
     )
@@ -320,7 +319,7 @@ case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val spee
       throw new RuntimeException("Target not found.")
     }
     (
-      copy(things = thingsAfter, changeLogger = changeLogger.attacked(attackerId, targetId)),
+      copy(things = thingsAfter, changeHandler = changeHandler.attacked(attackerId, targetId)),
       attacker,
       t2
       )
@@ -336,17 +335,17 @@ case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val spee
           case tt =>
             tt
         },
-        changeLogger = changeLogger.movedTo(id, p)
+        changeHandler = changeHandler.movedTo(id, p)
       ),
       moved
       )
   }
 
   def trySay(id: Identity, what: String) = {
-    copy(speeches = speeches :+ Say(id, what), changeLogger = changeLogger.said(id, what))
+    copy(speeches = speeches :+ Say(id, what), changeHandler = changeHandler.said(id, what))
   }
 
   def tryShout(id: Identity, what: String) = {
-    copy(speeches = speeches :+ Shout(id, what), changeLogger = changeLogger.shout(id, what))
+    copy(speeches = speeches :+ Shout(id, what), changeHandler = changeHandler.shout(id, what))
   }
 }

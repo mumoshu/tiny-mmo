@@ -90,14 +90,14 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver)(impli
     case Send(thriftMessage: AnyRef) =>
       val bytes = serialize(thriftMessage)
       log.debug("Sending " + thriftMessage)
-      oldSender = Some(sender)
+//      oldSender = Some(sender)
       sock.foreach { s =>
         log.debug("To server with the handle: " + s.uuid)
         s.write(FrameEncoder(bytes.compact))
 //        s.close()
         log.debug(bytes.length + " bytes sent")
       }
-      oldSender.foreach { s => s ! true }
+//      oldSender.foreach { s => s ! true }
     case FindAllThings =>
       waitingThings send {
         Some(sender)

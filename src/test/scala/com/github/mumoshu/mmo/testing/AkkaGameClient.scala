@@ -7,8 +7,10 @@ import akka.pattern._
 import bot._
 import com.github.mumoshu.mmo.thrift
 import com.github.mumoshu.mmo.models.world.world.{Identity, StringIdentity, Position}
-import com.github.mumoshu.mmo.server.{ReceivedLetter, TCPIPServer}
+import com.github.mumoshu.mmo.server.{Welcome, WorldCommand, WorldEvent, TCPIPServer}
 import scala.concurrent.ExecutionContext
+import akka.event.LoggingReceive
+import com.github.mumoshu.mmo.server.tcpip.ActorChannel
 
 // Stateful
 class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserver)(implicit val executionContext: ExecutionContext) extends Actor with ActorLogging {
@@ -66,12 +68,18 @@ class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserve
     }
   }
 
-  def receive = {
+
+  override def preStart() {
+    super.preStart()
+    server ! Welcome(id, ActorChannel(self))
+  }
+
+  def receive = LoggingReceive {
     case Send(thriftMessage: AnyRef) =>
       val bytes = serialize(thriftMessage)
       log.debug("Sending " + thriftMessage)
-      server ! ReceivedLetter(id, thriftMessage)
-      sender ! true
+      server ! WorldEvent(id, thriftMessage)
+//      sender ! true
     case FindAllThings =>
       waitingThings send {
         Some(sender)
@@ -92,7 +100,7 @@ class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserve
       }
       val m = new thrift.message.MyId()
       self ! Send(m)
-    case message: AnyRef =>
+    case WorldCommand(_, message) =>
       log.debug("Received: " + message)
       processSingle(message)
   }

@@ -11,7 +11,7 @@ object InMemoryWorldSpec extends Specification {
 
     val id = StringIdentity("one")
 
-    val changeLogger = mock[ChangeLogger]
+    val changeLogger = mock[WorldChangeHandler]
 
     val initialWorld: InMemoryWorld = new InMemoryWorld(
       List.empty,
