@@ -93,10 +93,11 @@ class AkkaGameClient(id: Identity, server: ActorRef, observer: GameClientObserve
       val m = new thrift.message.GetPosition(id.str)
       self ! Send(m)
     case AskForMyId =>
+      val dest = sender.actorRef
       waitingId send { id =>
         if (id.isDefined)
           throw new RuntimeException("waitingId is not empty!")
-        Some(sender)
+        Some(dest)
       }
       val m = new thrift.message.MyId()
       self ! Send(m)

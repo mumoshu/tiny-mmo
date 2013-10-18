@@ -32,6 +32,8 @@ case class EventedWorld(world: InMemoryWorld) {
           world.getPosition(sender, StringIdentity(m.id))
         case m: thrift.message.FindAllThings =>
           world.findAllThings(sender)
+        case m: thrift.message.Presentation =>
+          world.createPresentation(m)
       }
     )
   }

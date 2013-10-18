@@ -92,6 +92,12 @@ struct Position {
   3: double z
 }
 
+struct Vector3 {
+  1: double x,
+  2: double y,
+  3: double z,
+}
+
 struct MyId {
 }
 
@@ -112,3 +118,11 @@ struct Things {
   1: list<Thing> ts,
 }
 
+struct Presentation {
+  1: string id,
+  2: string ownerId,
+  3: string url,
+  4: Vector3 position,
+  5: Vector3 rotation,
+  6: Vector3 zoom
+}

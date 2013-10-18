@@ -8,9 +8,10 @@ import com.github.mumoshu.mmo.models.world.world.{StringIdentity, Identity, Posi
 import com.github.mumoshu.mmo.thrift
 import concurrent.duration.Duration
 import concurrent.Await
-import com.github.mumoshu.mmo.testing.{GameClient, RecordingGameClientObserver, GameClientObserver}
+import com.github.mumoshu.mmo.testing.{TcpIpGameClient, RecordingGameClientObserver, GameClientObserver}
 import akka.pattern._
 import concurrent.duration._
+import com.github.mumoshu.mmo.thrift.message.Presentation
 
 // Stateful
 case class GameBotImpl(client: ActorRef, playerName: String = "mumoshu") extends GameBot { // with GameClientObserver
@@ -75,6 +76,14 @@ case class GameBotImpl(client: ActorRef, playerName: String = "mumoshu") extends
     val end = getPos(id).get
     val p = start.lerp(end, 0.1f)
     moveTo(p)
+  }
+
+  def startPresentation(p: Presentation) {
+    sendToClient(p)
+  }
+
+  private def sendToClient(message: AnyRef) {
+    client ! Send(message)
   }
 
 }

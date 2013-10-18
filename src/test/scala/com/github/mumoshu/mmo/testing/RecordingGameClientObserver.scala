@@ -40,4 +40,8 @@ case class RecordingGameClientObserver(observedMessages: collection.mutable.Muta
   def observe(t: Things) {
     observedMessages += t
   }
+
+  def observe(p: Presentation) {
+    observedMessages += p
+  }
 }

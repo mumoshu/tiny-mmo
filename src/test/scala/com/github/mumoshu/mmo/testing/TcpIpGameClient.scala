@@ -16,7 +16,7 @@ import bot._
 import scala.concurrent.ExecutionContext
 
 // Stateful
-class GameClient(address: InetSocketAddress, observer: GameClientObserver)(implicit executionContext: ExecutionContext) extends Actor with ActorLogging {
+class TcpIpGameClient(address: InetSocketAddress, observer: GameClientObserver)(implicit executionContext: ExecutionContext) extends Actor with ActorLogging {
 
   log.debug("Connecting to " + address)
 
@@ -61,6 +61,8 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver)(impli
         observer.observe(t)
         waitingThings.get().foreach(_ ! t)
         waitingThings send { None }
+      case p: thrift.message.Presentation =>
+        observer.observe(p)
       case unexpected =>
         log.debug("Unexpected data received from the deserializer: " + unexpected)
         log.debug("ByteString#toString=" + bytes.utf8String)
@@ -115,10 +117,11 @@ class GameClient(address: InetSocketAddress, observer: GameClientObserver)(impli
         self ! Send(m)
       }
     case AskForMyId =>
+      val dest = sender.actorRef
       waitingId send { id =>
         if (id.isDefined)
           throw new RuntimeException("waitingId is not empty!")
-        Some(sender)
+        Some(dest)
       }
       sock.foreach { s =>
         val m = new thrift.message.MyId()

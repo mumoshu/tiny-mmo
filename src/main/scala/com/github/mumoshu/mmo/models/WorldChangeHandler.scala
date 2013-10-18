@@ -1,6 +1,7 @@
 package com.github.mumoshu.mmo.models
 
 import world.world.{Thing, Position, Identity}
+import com.github.mumoshu.mmo.thrift.message.Presentation
 
 trait WorldChangeHandler {
   def pend(block: => Unit): WorldChangeHandler
@@ -14,5 +15,6 @@ trait WorldChangeHandler {
   def toldOwnId(id: Identity): WorldChangeHandler
   def toldPosition(id: Identity, targetId: Identity, position: Position): WorldChangeHandler
   def tellThings(id: Identity, tt: List[Thing]): WorldChangeHandler
+  def presentationCreated(p: Presentation): WorldChangeHandler
 }
 

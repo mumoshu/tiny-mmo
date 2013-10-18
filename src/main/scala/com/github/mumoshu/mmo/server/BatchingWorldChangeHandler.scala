@@ -1,9 +1,12 @@
 package com.github.mumoshu.mmo.server
 
 import com.github.mumoshu.mmo.models.WorldChangeHandler
-import com.github.mumoshu.mmo.models.world.world.{Thing, Position, Identity}
-import com.github.mumoshu.mmo.thrift.message.{Attack, MoveTo, Leave, Join}
+import com.github.mumoshu.mmo.models.world.world._
+import com.github.mumoshu.mmo.thrift.message._
 import com.github.mumoshu.mmo.thrift
+import com.github.mumoshu.mmo.models.world.world.Position
+import com.github.mumoshu.mmo.models.world.world.Thing
+import scala.collection.JavaConversions._
 
 case class BatchingWorldChangeHandler(channels: Channels, worldChanges: List[WorldChange] = List.empty) extends WorldChangeHandler {
   def pend(block: => Unit): WorldChangeHandler = copy(worldChanges = worldChanges :+ WorldChange(block))
@@ -49,6 +52,7 @@ case class BatchingWorldChangeHandler(channels: Channels, worldChanges: List[Wor
     val m = new thrift.message.Position(targetId.str, position.x, position.z)
     channels.writeTo(id, m)
   }
+
   def tellThings(id: Identity, tt: List[Thing]) = pend {
     val m = new thrift.message.Things()
     m.ts = new java.util.ArrayList[thrift.message.Thing]()
@@ -60,6 +64,19 @@ case class BatchingWorldChangeHandler(channels: Channels, worldChanges: List[Wor
       }
     }
     channels.writeTo(id, m)
+  }
+
+  def presentationCreated(p: Presentation) = pend {
+    val m = p.deepCopy()
+    m.setUrl(m.getUrl.replace("server", "client"))
+    channels.all.foreach { case (id, ch) =>
+      id match {
+        case StringIdentity(strId) if strId == p.ownerId =>
+          ch.write(WorldCommand(id, p))
+        case _ =>
+          ch.write(WorldCommand(id, m))
+      }
+    }
   }
   //      case rep: thrift.message.Position =>
   //              val targetId = StringIdentity(m.id)

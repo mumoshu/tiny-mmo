@@ -12,4 +12,5 @@ trait GameClientObserver {
   def observe(t: Position)
   def observe(t: YourId)
   def observe(t: Things)
+  def observe(t: Presentation)
 }

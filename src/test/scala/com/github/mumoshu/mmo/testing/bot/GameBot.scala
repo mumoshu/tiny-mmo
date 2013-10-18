@@ -2,6 +2,7 @@ package com.github.mumoshu.mmo.testing.bot
 
 import com.github.mumoshu.mmo.models.world.world.{Identity, Position}
 import com.github.mumoshu.mmo.testing.GameClientObserver
+import com.github.mumoshu.mmo.thrift.message.Presentation
 
 trait GameBot {
   def join()
@@ -15,4 +16,5 @@ trait GameBot {
   def selfId: Option[Identity]
   def nearest: Option[Identity]
   def follow(id: Identity)
+  def startPresentation(p: Presentation)
 }

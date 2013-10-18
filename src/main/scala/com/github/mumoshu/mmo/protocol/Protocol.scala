@@ -123,6 +123,10 @@ trait Protocol {
               val d = new thrift.message.Things
               d.read(protocol)
               d
+            case 20 =>
+              val d = new thrift.message.Presentation
+              d.read(protocol)
+              d
             case unexpected =>
 //              throw new RuntimeException("Unexpected hint: " + hint)
               println("Unexpected hit: " + hint)
@@ -206,6 +210,9 @@ trait Protocol {
       case b: thrift.message.Things =>
         b.write(protocol)
         comp(19)
+      case b: thrift.message.Presentation =>
+        b.write(protocol)
+        comp(20)
       case unexpected =>
         throw new RuntimeException("Couldn't serialize an unexpected body: " + m + "(" + m.getClass + ")")
     }

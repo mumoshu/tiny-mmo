@@ -16,6 +16,8 @@ class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
 
   val log = LoggerFactory.getLogger(this.getClass)
 
+  val TypePresentation: Byte = 20
+
   override def apply(ctx: PipelineContext) =
     new SymmetricPipePair[AnyRef, (Byte, Array[Byte])] {
       implicit val byteOrder = ThriftMessageFrame.this.byteOrder
@@ -92,6 +94,9 @@ class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
             case b: thrift.message.Things =>
               b.write(protocol)
               messageInBytesWithTypeHint(19)
+            case b: thrift.message.Presentation =>
+              b.write(protocol)
+              messageInBytesWithTypeHint(TypePresentation)
             case unexpected =>
               throw new RuntimeException("Couldn't serialize an unexpected body: " + m + "(" + m.getClass + ")")
           }
@@ -193,6 +198,10 @@ class ThriftMessageFrame(byteOrder: ByteOrder = ByteOrder.BIG_ENDIAN)
               d
             case 19 =>
               val d = new thrift.message.Things
+              d.read(protocol)
+              d
+            case TypePresentation =>
+              val d = new thrift.message.Presentation
               d.read(protocol)
               d
             case unexpected =>

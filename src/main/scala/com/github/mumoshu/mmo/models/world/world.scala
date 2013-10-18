@@ -1,6 +1,7 @@
 package com.github.mumoshu.mmo.models.world.world
 
 import com.github.mumoshu.mmo.models.{WorldChangeHandler, Terrain}
+import com.github.mumoshu.mmo.thrift.message.Presentation
 
 sealed trait Identity {
   /**
@@ -225,6 +226,9 @@ case class Say(id: Identity, text: String) extends Speech
 case class Shout(id: Identity, text: String) extends Speech
 
 case class InMemoryWorld(val things: List[Thing], val terrain: Terrain, val speeches: List[Speech], changeHandler: WorldChangeHandler) extends World {
+  def createPresentation(p: Presentation): InMemoryWorld =
+    copy(changeHandler = changeHandler.presentationCreated(p))
+
   def findAllThings(identity: Identity): InMemoryWorld = copy(changeHandler = changeHandler.tellThings(identity, things))
 
   def getPosition(identity: Identity, targetId: Identity): InMemoryWorld =

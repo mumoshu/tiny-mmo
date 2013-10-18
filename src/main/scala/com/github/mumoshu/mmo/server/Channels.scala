@@ -40,4 +40,7 @@ class Channels {
     }
     this
   }
+
+  def all = channels
+
 }
