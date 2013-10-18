@@ -23,9 +23,10 @@ case class BatchingWorldChangeHandler(channels: Channels, worldChanges: List[Wor
   }
 
   def left(id: Identity) = pend {
-    val m = new Leave()
+    val m = new Left()
+    m.setId(id.str)
     channels.remove(id)
-    channels.publish(m)
+    publish(m)
   }
 
   def movedTo(id: Identity, position: Position) = pend {

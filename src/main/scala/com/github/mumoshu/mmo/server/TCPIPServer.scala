@@ -97,7 +97,7 @@ class TCPIPServer(implicit val executionContext: ExecutionContext) {
       port = port,
       worldActor = worldActor
     )),
-    name = "tcpIpServerActor"
+    name = s"tcpIpServerActor-${port}"
   )
 
   lazy val server = createServer(1234)

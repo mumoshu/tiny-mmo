@@ -10,6 +10,7 @@ import scala.util.{Failure, Success}
 import com.github.mumoshu.mmo.models.world.world.StringIdentity
 import com.github.mumoshu.mmo.server.tcpip.ActorChannel
 import akka.event.LoggingReceive
+import com.github.mumoshu.mmo.thrift.message.Leave
 
 /**
  * Above  --Command--> Below(=BelowCmdHandler)
@@ -84,8 +85,9 @@ class ConnectionHandler(connection: ActorRef, world: ActorRef)
       log.error("Failure detected\n" + akka.event.Logging.stackTraceFor(e))
 
     // The connection has been closed by the remote endpoint
-    case PeerClosed =>
-      log.debug("PeerClosed")
+    case c: ConnectionClosed =>
+      log.debug(s"ConnectionClosed: ${c}")
+      world ! WorldEvent(identity, new Leave())
       context stop self
   }
 }
