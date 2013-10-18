@@ -98,6 +98,13 @@ struct Vector3 {
   3: double z,
 }
 
+struct Quaternion {
+  1: double x,
+  2: double y,
+  3: double z,
+  4: double w,
+}
+
 struct MyId {
 }
 
@@ -123,6 +130,6 @@ struct Presentation {
   2: string ownerId,
   3: string url,
   4: Vector3 position,
-  5: Vector3 rotation,
+  5: Quaternion rotation,
   6: Vector3 zoom
 }

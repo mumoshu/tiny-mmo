@@ -17,7 +17,7 @@ import com.github.mumoshu.mmo.thrift
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.specs2.execute.Result
 import org.specs2.specification.Context
-import com.github.mumoshu.mmo.thrift.message.{Vector3, Presentation}
+import com.github.mumoshu.mmo.thrift.message.{Quaternion, Vector3, Presentation}
 
 object Tester {
 
@@ -191,9 +191,19 @@ class TCPIPServerSpec extends Specification {
         v
       }
 
+      def randomQuaternion = {
+        import scala.math.random
+        val q = new Quaternion
+        q.setX(random)
+        q.setY(random)
+        q.setZ(random)
+        q.setW(random)
+        q
+      }
+
       val presentationId = java.util.UUID.randomUUID().toString
       val position = randomVector3
-      val rotation = randomVector3
+      val rotation = randomQuaternion
       val zoom = randomVector3
       val p = new Presentation
       p.setId(presentationId)
